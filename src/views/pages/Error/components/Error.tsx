@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
 
 export const Error: FC = () => {
-  return <></>
+  return <>Error</>
 }
