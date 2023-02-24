@@ -30,6 +30,7 @@ specifiers:
   eslint-plugin-promise: ^6.1.1
   eslint-plugin-react: ^7.32.2
   eslint-plugin-react-hooks: ^4.6.0
+  keen-slider: ^6.8.5
   lodash: ^4.17.21
   nanoid: ^4.0.0
   prettier: ^2.8.3
@@ -71,6 +72,7 @@ dependencies:
   eslint-plugin-promise: 6.1.1_eslint@8.33.0
   eslint-plugin-react: 7.32.2_eslint@8.33.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.33.0
+  keen-slider: 6.8.5
   lodash: 4.17.21
   nanoid: 4.0.0
   prettier: 2.8.3
@@ -2600,6 +2602,10 @@ packages:
     dependencies:
       array-includes: 3.1.6
       object.assign: 4.1.4
+    dev: false
+
+  /keen-slider/6.8.5:
+    resolution: {integrity: sha512-9yoosfffgTCrkmbX8kCUMWsn9KDgPSkxBof5/0yXde001D1xao7i9ppfxQCCK0MLnoCa+Rdssby0jFbTTUM4rw==}
     dev: false
 
   /language-subtag-registry/0.3.22:
