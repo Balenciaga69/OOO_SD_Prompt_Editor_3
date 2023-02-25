@@ -6,16 +6,18 @@ import { SFIcon } from '@/views/shared/SFIcon'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { nanoid } from '@reduxjs/toolkit'
 import { DragCardList } from './DragCardList'
+
 export const PromptVisualArea: FC = () => {
   const [items, setItems] = useState<Array<string>>(['???'])
-  // TODO: by CaiChengYou
+
   const plus = (): void => {
     if (items.length >= 10) return
     setItems([...items, nanoid()])
   }
-  // TODO: by CaiChengYou
+
   const minus = (id: string): void => {
     if (items.length <= 1) return
+
     const newList = _.filter(items, (e) => e !== id)
     setItems(newList)
   }
@@ -31,27 +33,35 @@ export const PromptVisualArea: FC = () => {
     </Box>
   )
 }
+
 interface CardItemProps {
   id: string
   handleClickPlusIcon: () => void
   handleClickMinusIcon: (id: string) => void
 }
+
 const VisualPaper: FC<CardItemProps> = (props) => {
   const { id, handleClickMinusIcon: onClickMinusIcon, handleClickPlusIcon: onClickPlusIcon } = props
+
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
-  return (
-    <Card h='100%' p='xl' withBorder className='CardItem'>
-      <Flex h='100%' direction='column'>
-        <Card.Section inheritPadding>
-          <Input variant='unstyled' placeholder='為這項集合命名......' maxLength={10} />
-        </Card.Section>
-        <Card.Section inheritPadding className='flex-grow-1'>
-          <Box h='100%'>
-            {/* // FIXME: by CaiChengYou */}
-            <DragCardList />
-          </Box>
-        </Card.Section>
-      </Flex>
+
+  const DragSection: FC = () => (
+    <Card.Section inheritPadding className='flex-grow-1'>
+      <Box h='100%'>
+        {/* // FIXME: by CaiChengYou */}
+        <DragCardList />
+      </Box>
+    </Card.Section>
+  )
+
+  const NamingSection: FC = () => (
+    <Card.Section inheritPadding>
+      <Input variant='unstyled' placeholder='為這項集合命名......' maxLength={10} />
+    </Card.Section>
+  )
+
+  const ActionSection: FC = () => (
+    <>
       <Box className='plus'>
         <ActionIcon variant='filled' radius='xl' size='xl' onClick={onClickPlusIcon}>
           <SFIcon icon='faPlus' iconProps={iconProps} />
@@ -62,6 +72,15 @@ const VisualPaper: FC<CardItemProps> = (props) => {
           <SFIcon icon='faMinus' iconProps={iconProps} />
         </ActionIcon>
       </Box>
+    </>
+  )
+  return (
+    <Card h='100%' p='xl' withBorder className='CardItem'>
+      <NamingSection />
+      <Flex h='100%' direction='column'>
+        <DragSection />
+      </Flex>
+      <ActionSection />
     </Card>
   )
 }

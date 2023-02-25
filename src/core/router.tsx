@@ -6,9 +6,9 @@ import { EditorPrompt } from '@/views/pages/EditorPrompt'
 import { EditorArticle } from '@/views/pages/EditorArticle'
 import { Intro } from '@/views/pages/Intro'
 import { RD } from './RD'
+
 export const AppRoutes: FC = () => {
   const { EDITOR_ARTICLE, EDITOR_PROMPT, ERROR, INTRO } = RD.PAGE_LINK
-
   return (
     <BrowserRouter>
       <Routes>

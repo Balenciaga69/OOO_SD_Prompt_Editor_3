@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom'
 
 export const HorizontalLogo: FC = () => {
   const { WIDE_LOGO } = RD.IMG
+
   const { INTRO } = RD.PAGE_LINK
+
   const { UPDATE_VERSION } = RD.AUTHOR
   return (
     <Link to={INTRO}>

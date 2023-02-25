@@ -9,6 +9,7 @@ interface Props {
   children?: ReactNode
   id: number
 }
+
 export const DragCardList: FC = () => {
   const [items, setItems] = useState([1, 2, 3])
   function handleDragEnd(event: DragEndEvent): void {
@@ -16,6 +17,7 @@ export const DragCardList: FC = () => {
     if (over && active && active.id !== over.id) {
       setItems((items) => {
         const oldIdx = items.indexOf(_.toNumber(active.id))
+
         const newIdx = items.indexOf(_.toNumber(over.id))
         return arrayMove(items, oldIdx, newIdx)
       })
@@ -35,6 +37,7 @@ export const DragCardList: FC = () => {
 }
 export function SortableItemWrapper({ id }: Props): ReactElement {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

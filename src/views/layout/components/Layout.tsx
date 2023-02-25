@@ -3,9 +3,11 @@ import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 import { NavBar } from './NavBar'
 import { Footer } from './Footer'
+
 interface Main {
   main: { backgroundColor: string }
 }
+
 export const Layout: FC = () => {
   return (
     <>

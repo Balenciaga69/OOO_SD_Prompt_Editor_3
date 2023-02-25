@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { PromptInputArea } from './PromptInputArea'
 import { PromptVisualArea } from './PromptVisualArea'
 import '../EditorPrompt.scss'
+
 export const EditorPrompt: FC = () => {
   return (
     <Box>
