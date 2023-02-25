@@ -46,7 +46,7 @@ const VisualPaper: FC<VisualPaperProps> = (props) => {
 
   const NamingSection: FC = () => (
     <Card.Section inheritPadding>
-      <Input variant='unstyled' placeholder='為這項集合命名......' maxLength={10} />
+      <Input size='xl' fw='bolder' variant='unstyled' placeholder='為這項集合命名......' maxLength={10} />
     </Card.Section>
   )
 
@@ -71,7 +71,7 @@ const VisualPaper: FC<VisualPaperProps> = (props) => {
     </Box>
   )
   return (
-    <Card h='100%' withBorder className='VisualPaper overflow-visible'>
+    <Card h='100%' style={{ backgroundColor: '#1a1b1e60' }} withBorder className='VisualPaper overflow-visible'>
       <ScrollArea type='never' h='100%'>
         <NamingSection />
         <DragSection />

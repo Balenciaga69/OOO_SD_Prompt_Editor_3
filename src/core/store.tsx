@@ -1,9 +1,7 @@
-import { configureStore } from '@reduxjs/toolkit'
-import createSagaMiddleware from 'redux-saga'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { articlesSlice, promptsSlice } from './redux'
 
-const sagaMiddleware = createSagaMiddleware()
-
+const shared = combineReducers({ articles: articlesSlice.reducer, prompts: promptsSlice.reducer })
 export const appStore = configureStore({
-  reducer: {},
-  middleware: [sagaMiddleware],
+  reducer: { shared },
 })

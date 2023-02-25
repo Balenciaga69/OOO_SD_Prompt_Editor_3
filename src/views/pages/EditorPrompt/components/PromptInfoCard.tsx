@@ -1,6 +1,6 @@
 import { SFIcon } from '@/views/shared/SFIcon'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
-import { ActionIcon, Card, Group, HoverCard, Table, Text } from '@mantine/core'
+import { ActionIcon, Card, Flex, Group, HoverCard, Table, Text } from '@mantine/core'
 import _ from 'lodash'
 import React, { FC, ReactNode, useEffect, useState } from 'react'
 interface PromptInfoCardProps {
@@ -23,8 +23,8 @@ export const PromptInfoCard: FC<PromptInfoCardProps> = (props) => {
               <SFIcon icon='faSignature' />
             </td>
             <td>
-              <WithNameHoverCard text={props.name}>
-                <span>{shortName}</span>
+              <WithNameHoverCard text={props.name} handleClickXIcon={() => {}}>
+                <Text>{shortName}</Text>
               </WithNameHoverCard>
             </td>
           </tr>
@@ -80,14 +80,21 @@ const WithPlusMinusHoverCard: FC<WithNumHoverCardProps> = (props) => {
 interface WithNameHoverCardProps {
   children: ReactNode
   text: string
+  handleClickXIcon: () => void
 }
 const WithNameHoverCard: FC<WithNameHoverCardProps> = (props) => {
-  const { children, text } = props
+  const { children, text, handleClickXIcon } = props
+  const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: 'xs', className: 'pointer' }
   return (
     <HoverCard shadow='md' position='bottom-start'>
       <HoverCard.Target>{children}</HoverCard.Target>
       <HoverCard.Dropdown>
-        <Text>{text}</Text>
+        <Flex align='center' justify='start' gap='xs'>
+          <ActionIcon color='red' variant='light' size='xs' onClick={handleClickXIcon}>
+            <SFIcon icon='faX' iconProps={iconProps} />
+          </ActionIcon>
+          <Text>{text}</Text>
+        </Flex>
       </HoverCard.Dropdown>
     </HoverCard>
   )

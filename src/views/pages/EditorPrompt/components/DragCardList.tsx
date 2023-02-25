@@ -1,7 +1,7 @@
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core'
 import { SortableContext, arrayMove, rectSortingStrategy, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Col, SimpleGrid } from '@mantine/core'
+import { SimpleGrid } from '@mantine/core'
 import _ from 'lodash'
 import React, { FC, ReactElement, ReactNode, useState } from 'react'
 import { PromptInfoCard } from './PromptInfoCard'
@@ -27,9 +27,10 @@ export const DragCardList: FC = () => {
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={items} strategy={rectSortingStrategy}>
         <SimpleGrid
-          cols={5}
+          cols={6}
           className='DragCardListGrid'
           breakpoints={[
+            { maxWidth: 'xl', cols: 5 },
             { maxWidth: 'lg', cols: 4 },
             { maxWidth: 'md', cols: 3 },
             { maxWidth: 'sm', cols: 2 },

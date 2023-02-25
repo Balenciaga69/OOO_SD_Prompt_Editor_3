@@ -1,3 +1,5 @@
+import { EntityState } from '@reduxjs/toolkit'
+
 export interface Prompt {
   id: string
   text: string
@@ -6,8 +8,19 @@ export interface Prompt {
 }
 export interface Article {
   id: string
-  prompts: Prompt[]
+  promptIDs: string[]
 }
 export interface CurrentInfo {
   articleID: string
+}
+export interface AppState {
+  shared: {
+    articles: EntityState<Article>
+    prompts: EntityState<Prompt>
+  }
+  modules: {
+    editorPrompt: null
+    modalArticles: null
+    modalSetting: null
+  }
 }
