@@ -1,8 +1,8 @@
 import { AppShell, Box } from '@mantine/core'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import { NavBar } from './NavBar'
 import { Footer } from './Footer'
+import { NavBar } from './NavBar'
 
 interface Main {
   main: { backgroundColor: string }

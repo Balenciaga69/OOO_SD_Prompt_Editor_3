@@ -22,6 +22,8 @@ specifiers:
   '@types/react-dom': ^18.0.9
   '@typescript-eslint/eslint-plugin': ^5.49.0
   '@typescript-eslint/parser': ^5.49.0
+  '@uiw/codemirror-theme-atomone': ^4.19.9
+  '@uiw/codemirror-theme-dracula': ^4.19.9
   '@uiw/react-codemirror': ^4.19.7
   '@vitejs/plugin-react': ^3.0.0
   bootstrap: ^5.2.3
@@ -70,6 +72,8 @@ dependencies:
   '@redux-devtools/core': 3.13.1_bqc5wbq65zmqqpvwou42otfgj4
   '@reduxjs/toolkit': 1.9.2_k4ae6lp43ej6mezo3ztvx6pykq
   '@types/lodash': 4.14.191
+  '@uiw/codemirror-theme-atomone': 4.19.9_@codemirror+view@6.7.3
+  '@uiw/codemirror-theme-dracula': 4.19.9_@codemirror+view@6.7.3
   '@uiw/react-codemirror': 4.19.7_vntmjfdugxvddyfi35qyogxqxy
   bootstrap: 5.2.3_@popperjs+core@2.11.6
   dayjs: 1.11.7
@@ -1430,6 +1434,32 @@ packages:
       '@codemirror/language': 6.4.0
       '@codemirror/lint': 6.1.0
       '@codemirror/search': 6.2.3
+      '@codemirror/state': 6.2.0
+      '@codemirror/view': 6.7.3
+    dev: false
+
+  /@uiw/codemirror-theme-atomone/4.19.9_@codemirror+view@6.7.3:
+    resolution: {integrity: sha512-eNDEkB+GDeQ3gAH3R/WXiqFkgcNR8EC/WviZC5Nj+b/2V7AeRinjrWundgST/wYCxdqvu+s3mZ7QN1kpgqCUrQ==}
+    dependencies:
+      '@uiw/codemirror-themes': 4.19.9_@codemirror+view@6.7.3
+    transitivePeerDependencies:
+      - '@codemirror/view'
+    dev: false
+
+  /@uiw/codemirror-theme-dracula/4.19.9_@codemirror+view@6.7.3:
+    resolution: {integrity: sha512-ZOU4WnxrRxFnH1UFK7pQS72OcSL7nY1c3nufVhwSmkQh2ZY8lEsyjAPvQxWS+4oNKFBg2VB2SuNiCO/hPxmmcA==}
+    dependencies:
+      '@uiw/codemirror-themes': 4.19.9_@codemirror+view@6.7.3
+    transitivePeerDependencies:
+      - '@codemirror/view'
+    dev: false
+
+  /@uiw/codemirror-themes/4.19.9_@codemirror+view@6.7.3:
+    resolution: {integrity: sha512-PH3hl1w42z7GXe/zoD9gSadOGBWyKPl7vHm/8V1PUuHXT21+neyfRc7v0xPwb05pGP6ExfbmPi78y4+g6cHopg==}
+    peerDependencies:
+      '@codemirror/view': '>=6.0.0'
+    dependencies:
+      '@codemirror/language': 6.4.0
       '@codemirror/state': 6.2.0
       '@codemirror/view': 6.7.3
     dev: false

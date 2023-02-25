@@ -1,20 +1,19 @@
-import { ActionIcon, Box, Card, Flex, Input } from '@mantine/core'
-import _ from 'lodash'
-import React, { FC, useState } from 'react'
-import { Keen3DCarousel } from './Keen3DCarousel'
 import { SFIcon } from '@/views/shared/SFIcon'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+import { ActionIcon, Box, Card, Flex, Input, ScrollArea } from '@mantine/core'
 import { nanoid } from '@reduxjs/toolkit'
+import _ from 'lodash'
+import React, { FC, useState } from 'react'
 import { DragCardList } from './DragCardList'
+import { Keen3DCarousel } from './Keen3DCarousel'
 
 export const PromptVisualArea: FC = () => {
   const [items, setItems] = useState<Array<string>>(['???'])
-
+  // FIXME:Redux by CaiChengYou
   const plus = (): void => {
     if (items.length >= 10) return
     setItems([...items, nanoid()])
   }
-
   const minus = (id: string): void => {
     if (items.length <= 1) return
 
@@ -34,25 +33,16 @@ export const PromptVisualArea: FC = () => {
   )
 }
 
-interface CardItemProps {
+interface VisualPaperProps {
   id: string
   handleClickPlusIcon: () => void
   handleClickMinusIcon: (id: string) => void
 }
 
-const VisualPaper: FC<CardItemProps> = (props) => {
-  const { id, handleClickMinusIcon: onClickMinusIcon, handleClickPlusIcon: onClickPlusIcon } = props
+const VisualPaper: FC<VisualPaperProps> = (props) => {
+  const { id, handleClickMinusIcon, handleClickPlusIcon } = props
 
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
-
-  const DragSection: FC = () => (
-    <Card.Section inheritPadding className='flex-grow-1'>
-      <Box h='100%'>
-        {/* // FIXME: by CaiChengYou */}
-        <DragCardList />
-      </Box>
-    </Card.Section>
-  )
 
   const NamingSection: FC = () => (
     <Card.Section inheritPadding>
@@ -60,26 +50,32 @@ const VisualPaper: FC<CardItemProps> = (props) => {
     </Card.Section>
   )
 
+  const DragSection: FC = () => (
+    <Card.Section inheritPadding className='flex-grow-1'>
+      <DragCardList />
+    </Card.Section>
+  )
+
   const ActionSection: FC = () => (
-    <>
+    <Box>
       <Box className='plus'>
-        <ActionIcon variant='filled' radius='xl' size='xl' onClick={onClickPlusIcon}>
+        <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleClickPlusIcon}>
           <SFIcon icon='faPlus' iconProps={iconProps} />
         </ActionIcon>
       </Box>
       <Box className='minus'>
-        <ActionIcon variant='filled' radius='xl' size='xl' onClick={(): void => onClickMinusIcon(id)}>
+        <ActionIcon variant='filled' radius='xl' size='xl' onClick={(): void => handleClickMinusIcon(id)}>
           <SFIcon icon='faMinus' iconProps={iconProps} />
         </ActionIcon>
       </Box>
-    </>
+    </Box>
   )
   return (
-    <Card h='100%' p='xl' withBorder className='CardItem'>
-      <NamingSection />
-      <Flex h='100%' direction='column'>
+    <Card h='100%' withBorder className='VisualPaper overflow-visible'>
+      <ScrollArea type='never' h='100%'>
+        <NamingSection />
         <DragSection />
-      </Flex>
+      </ScrollArea>
       <ActionSection />
     </Card>
   )

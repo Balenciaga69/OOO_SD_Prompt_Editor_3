@@ -8,8 +8,9 @@ export class RD {
     UPDATE_VERSION: '2023/02/28',
   } as const
   static PAGE_LINK = {
-    EDITOR_PROMPT: 'editor/prompt',
-    EDITOR_ARTICLE: 'editor/article',
+    PROMPT: 'prompt',
+    PROMPT_CODE: 'prompt#code',
+    PROMPT_VISUAL: 'prompt#visual',
     INTRO: 'intro',
     ERROR: 'error',
   } as const

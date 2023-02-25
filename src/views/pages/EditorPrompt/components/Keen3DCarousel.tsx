@@ -24,7 +24,7 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
   function detailsChanged(): void {
     const slideCount = slider.slides.length
 
-    const z = slideCount * 225
+    const z = slideCount * 300
 
     const containerDeg = 360 * slider.track.details.progress
 
@@ -42,6 +42,8 @@ interface Props {
 }
 
 export const Keen3DCarousel: FC<Props> = (props) => {
+  // TODO: by CaiChengYou
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const { children } = props
@@ -83,7 +85,7 @@ export const Keen3DCarousel: FC<Props> = (props) => {
     </>
   )
   return (
-    <Box px='lg' className='wrapper KeenCardCarousel'>
+    <Box className='wrapper KeenCardCarousel'>
       <Box className='scene'>
         <IconBoxes />
         <div className='keen-slider' ref={sliderRef}>

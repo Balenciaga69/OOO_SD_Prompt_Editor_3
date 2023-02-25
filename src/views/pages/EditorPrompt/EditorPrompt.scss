@@ -1,6 +1,5 @@
-.CardItem {
+.VisualPaper {
   position: relative;
-  overflow: visible;
   .plus,
   .minus {
     position: absolute;
@@ -27,5 +26,10 @@
   }
   .right {
     right: -1%;
+  }
+}
+.DragCardListGrid {
+  .dragging {
+    z-index: 999;
   }
 }
