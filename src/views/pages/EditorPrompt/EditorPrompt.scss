@@ -1,0 +1,31 @@
+.CardItem {
+  position: relative;
+  overflow: visible;
+  .plus,
+  .minus {
+    position: absolute;
+    z-index: 200;
+    right: -1%;
+  }
+  .plus {
+    top: -2%;
+  }
+  .minus {
+    bottom: -2%;
+  }
+}
+.KeenCardCarousel {
+  .left,
+  .right {
+    position: absolute;
+    z-index: 200;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .left {
+    left: -1%;
+  }
+  .right {
+    right: -1%;
+  }
+}

@@ -1,11 +1,10 @@
 import { RD } from '@/core'
 import { SFIcon } from '@/views/shared/SFIcon'
-import { ActionIcon, Box, Center, Flex, Navbar as MNavBar, Text } from '@mantine/core'
+import { ActionIcon, Box, Center, Flex, Navbar as MNavBar } from '@mantine/core'
 import React, { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { HorizontalLogo } from './HorizontalLogo'
 interface IconItemProps {
-  to: string
+  to?: string
   children: ReactNode
 }
 export const NavBar: FC = () => {
@@ -18,13 +17,16 @@ export const NavBar: FC = () => {
       <Flex direction='column' gap='md'>
         <Box className='text-center'>
           <IconWrapper to={INTRO}>
-            <SFIcon icon='faLightbulb' />
+            <SFIcon icon='faInfo' />
           </IconWrapper>
           <IconWrapper to={EDITOR_ARTICLE}>
-            <SFIcon icon='faThLarge' />
+            <SFIcon icon='faBarChart' />
           </IconWrapper>
           <IconWrapper to={EDITOR_PROMPT}>
             <SFIcon icon='faCode' />
+          </IconWrapper>
+          <IconWrapper>
+            <SFIcon icon='faGear' />
           </IconWrapper>
         </Box>
       </Flex>
@@ -39,11 +41,20 @@ export const NavBar: FC = () => {
 const IconWrapper: FC<IconItemProps> = ({ to, children }) => {
   return (
     <Center mt='lg'>
-      <Link to={to}>
+      <LinkWrapper to={to}>
         <ActionIcon size='lg' variant='transparent'>
           {children}
         </ActionIcon>
-      </Link>
+      </LinkWrapper>
     </Center>
+  )
+}
+
+const LinkWrapper: FC<IconItemProps> = ({ to, children }) => {
+  return (
+    <>
+      {to && <Link to={to}>{children}</Link>}
+      {!to && children}
+    </>
   )
 }

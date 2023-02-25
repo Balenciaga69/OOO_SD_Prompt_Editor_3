@@ -1,7 +1,7 @@
 import { AppShell, Box } from '@mantine/core'
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import { NavBar } from './Navbar'
+import { NavBar } from './NavBar'
 import { Footer } from './Footer'
 interface Main {
   main: { backgroundColor: string }
@@ -19,7 +19,7 @@ export const Layout: FC = () => {
           main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
         })}
       >
-        <Box className='z-100 position-relative' bg='dark'>
+        <Box className='z-100 position-relative overflow-hidden' bg='dark'>
           <Outlet />
         </Box>
       </AppShell>
