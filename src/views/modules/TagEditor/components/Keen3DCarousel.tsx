@@ -3,7 +3,9 @@ import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box } from '@mantine/core'
 import { KeenSliderPlugin, useKeenSlider } from 'keen-slider/react'
 import _ from 'lodash'
-import React, { FC, ReactNode, useState } from 'react'
+import React, { FC, ReactNode, useEffect, useState } from 'react'
+import { useTagEditor } from '../useTagEditor'
+import { bindActionCreators } from '@reduxjs/toolkit'
 
 const MutationPlugin: KeenSliderPlugin = (slider) => {
   const config = { childList: true }
@@ -40,16 +42,21 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
 interface Props {
   children: ReactNode[]
 }
+const useKeen3DCarousel = () => {
+  const { allTagBlock, myActions, dispatch } = useTagEditor()
+  const { setState } = myActions
+  const actionCreators = bindActionCreators({ setState }, dispatch)
+  return { allTagBlock, ...actionCreators }
+}
 
 export const Keen3DCarousel: FC<Props> = (props) => {
-  // TODO: by CaiChengYou
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentSlide, setCurrentSlide] = useState(0)
-
+  const { allTagBlock, setState } = useKeen3DCarousel()
+  useEffect(() => {
+    const blockID = allTagBlock[currentSlide].id
+    setState({ blockID })
+  }, [currentSlide])
   const { children } = props
-
-  const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '3x', className: 'pointer', opacity: 0.5 }
-
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -64,13 +71,32 @@ export const Keen3DCarousel: FC<Props> = (props) => {
     },
     [carouselPlugin, MutationPlugin]
   )
-
   const changeSlide = (dir: 'left' | 'right'): void => {
     if (children.length <= 1) return
     dir === 'left' ? instanceRef.current?.prev() : instanceRef.current?.next()
   }
-
-  const IconBoxes: FC = () => (
+  return (
+    <Box className='wrapper Keen3DCarousel'>
+      <Box className='scene'>
+        <IconBoxes changeSlide={changeSlide} />
+        <div className='keen-slider' ref={sliderRef}>
+          {_.map([...children], (child, i) => (
+            <div key={i} className='carousel__cell'>
+              {child}
+            </div>
+          ))}
+        </div>
+      </Box>
+    </Box>
+  )
+}
+interface IconBoxesProps {
+  changeSlide: (dir: 'left' | 'right') => void
+}
+const IconBoxes: FC<IconBoxesProps> = (props) => {
+  const { changeSlide } = props
+  const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '3x', className: 'pointer', opacity: 0.5 }
+  return (
     <>
       <Box className='left'>
         <ActionIcon variant='transparent' radius='xl' size='xl' onClick={(): void => changeSlide('left')}>
@@ -83,19 +109,5 @@ export const Keen3DCarousel: FC<Props> = (props) => {
         </ActionIcon>
       </Box>
     </>
-  )
-  return (
-    <Box className='wrapper Keen3DCarousel'>
-      <Box className='scene'>
-        <IconBoxes />
-        <div className='keen-slider' ref={sliderRef}>
-          {_.map([...children], (child, i) => (
-            <div key={i} className='carousel__cell'>
-              {child}
-            </div>
-          ))}
-        </div>
-      </Box>
-    </Box>
   )
 }

@@ -31,7 +31,7 @@ export const TagEditor: FC = () => {
   return (
     <Box px='xl'>
       <Box className='h-100vh mh-100vh' ref={visualRef}>
-        {/* <BlockTagVisual /> */}
+        <BlockTagVisual />
       </Box>
       <Box className='h-100vh mh-100vh' ref={codeRef}>
         <BlockCodeMirror />

@@ -1,93 +1,101 @@
+import { rootSlices } from '@/core'
+import { TagBlock } from '@/interfaces/core.interface'
 import { SFIcon } from '@/views/shared/SFIcon'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box, Card, Input, ScrollArea } from '@mantine/core'
-import { nanoid } from '@reduxjs/toolkit'
+import { useDebouncedValue } from '@mantine/hooks'
+import { bindActionCreators, nanoid } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
+import { useTagEditor } from '../useTagEditor'
 import { AreaDragCardGrid } from './AreaDragCardGrid'
 import { Keen3DCarousel } from './Keen3DCarousel'
-import { useTagEditor } from '../useTagEditor'
-import { TagBlock } from '@/interfaces/core.interface'
 const useBlockTagVisual = () => {
-  const { dispatch, myActions, myState, sharedState } = useTagEditor()
-  const tagBlockEntities = useMemo(() => {
-    return _.filter(sharedState.tagBlock.entities, (e) => !_.isNil(e)) as TagBlock[]
-  }, [sharedState])
-  return { tagBlockEntities }
+  const { allTagBlock, myState } = useTagEditor()
+  return { allTagBlock, myState }
 }
 export const BlockTagVisual: FC = () => {
-  const { tagBlockEntities } = useBlockTagVisual()
-  const [items, setItems] = useState<Array<string>>(['???'])
-  // FIXME:Redux by CaiChengYou
-  const plus = (): void => {
-    if (items.length >= 10) return
-    setItems([...items, nanoid()])
-  }
-  const minus = (id: string): void => {
-    if (items.length <= 1) return
-
-    const newList = _.filter(items, (e) => e !== id)
-    setItems(newList)
-  }
+  const { allTagBlock, myState } = useBlockTagVisual()
   return (
     <Box py='xl' h='100%'>
-      {tagBlockEntities.length && (
+      {allTagBlock.length && (
         <Keen3DCarousel>
-          {_.map(tagBlockEntities, (entity) => (
-            <VisualItem key={entity.id} handleClickPlusIcon={plus} handleClickMinusIcon={minus} />
+          {_.map(allTagBlock, (tagBlock) => (
+            <VisualItem key={tagBlock.id} tagBlock={tagBlock} />
           ))}
         </Keen3DCarousel>
       )}
     </Box>
   )
 }
-
 interface VisualItemProps {
-  handleClickPlusIcon: () => void
-  handleClickMinusIcon: (id: string) => void
+  tagBlock: TagBlock
 }
 const useVisualItem = () => {
-  const { dispatch, myActions, myState, sharedState } = useTagEditor()
+  const { dispatch } = useTagEditor()
+  const actionCreators = bindActionCreators({ ...rootSlices.tagBlockSlice.actions }, dispatch)
+  return { ...actionCreators }
 }
-
 const VisualItem: FC<VisualItemProps> = (props) => {
-  const { handleClickMinusIcon, handleClickPlusIcon } = props
-  const handleTitleChange = (title: string) => {
-    console.info(' watchThis title', title)
-  }
-  const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
-
-  const NamingSection: FC = () => (
-    <Card.Section inheritPadding>
-      <Input size='xl' fw='bolder' variant='unstyled' placeholder='為這項集合命名......' maxLength={10} value={code} onChange={(e) => handleTitleChange(e.target.value)} />
-    </Card.Section>
-  )
-  const DragSection: FC = () => (
-    <Card.Section inheritPadding className='flex-grow-1'>
-      <AreaDragCardGrid />
-    </Card.Section>
-  )
-  const ActionSection: FC = () => (
-    <Box>
-      <Box className='plus'>
-        <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleClickPlusIcon}>
-          <SFIcon icon='faPlus' iconProps={iconProps} />
-        </ActionIcon>
-      </Box>
-      <Box className='minus'>
-        <ActionIcon variant='filled' radius='xl' size='xl' onClick={(): void => handleClickMinusIcon(id)}>
-          <SFIcon icon='faMinus' iconProps={iconProps} />
-        </ActionIcon>
-      </Box>
-    </Box>
-  )
+  const { tagBlock } = props
   return (
     <Card h='100%' style={{ backgroundColor: '#1a1b1e60' }} withBorder className='VisualItem overflow-visible'>
       <ScrollArea type='never' h='100%'>
-        <NamingSection />
-        <DragSection />
+        <NamingSection tagBlock={tagBlock} />
+        <DragSection tagBlock={tagBlock} />
       </ScrollArea>
-      <ActionSection />
+      <ActionSection tagBlock={tagBlock} />
     </Card>
+  )
+}
+const NamingSection: FC<VisualItemProps> = (props) => {
+  const [title, setTitle] = useState(props.tagBlock.title)
+  const { updateOne } = useVisualItem()
+  const [debounced] = useDebouncedValue(title, 200)
+  useEffect(() => {
+    updateOne({ changes: { title }, id: props.tagBlock.id })
+  }, [debounced])
+  return (
+    <Card.Section inheritPadding>
+      <Input size='xl' fw='bolder' variant='unstyled' placeholder='為這項集合命名......' maxLength={10} value={title} onChange={(e) => setTitle(e.target.value)} />
+    </Card.Section>
+  )
+}
+const DragSection: FC<VisualItemProps> = (props) => {
+  const { tagBlock } = props
+  return (
+    <Card.Section inheritPadding className='flex-grow-1'>
+      <AreaDragCardGrid tagBlock={tagBlock} />
+    </Card.Section>
+  )
+}
+const ActionSection: FC<VisualItemProps> = (props) => {
+  const { tagBlock } = props
+  const blockLength = useBlockTagVisual().allTagBlock.length
+  const { addOne, removeOne } = useVisualItem()
+  const handleAddClick = () => {
+    addOne({ id: nanoid(), tagIDs: [], title: '' })
+  }
+  const handleRemoveClick = () => {
+    removeOne(tagBlock.id)
+  }
+  const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
+  return (
+    <Box>
+      {blockLength < 10 && (
+        <Box className='plus'>
+          <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleAddClick}>
+            <SFIcon icon='faPlus' iconProps={iconProps} />
+          </ActionIcon>
+        </Box>
+      )}
+      {blockLength > 1 && (
+        <Box className='minus'>
+          <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleRemoveClick}>
+            <SFIcon icon='faMinus' iconProps={iconProps} />
+          </ActionIcon>
+        </Box>
+      )}
+    </Box>
   )
 }
