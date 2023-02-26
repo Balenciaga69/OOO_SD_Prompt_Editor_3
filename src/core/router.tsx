@@ -1,9 +1,9 @@
 import { Layout } from '@/views/layout'
-import { EditorPrompt } from '@/views/pages/EditorPrompt'
-import { Error } from '@/views/pages/Error'
-import { Intro } from '@/views/pages/Intro'
+import { EditorPrompt } from '@/views/modules/EditorPrompt'
+import { Error } from '@/views/modules/Error'
+import { Intro } from '@/views/modules/Intro'
 import React, { FC } from 'react'
-import { BrowserRouter, HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { RD } from './RD'
 
 export const AppRoutes: FC = () => {

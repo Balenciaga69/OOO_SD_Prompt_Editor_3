@@ -8,9 +8,11 @@ export interface Prompt {
 }
 export interface Article {
   id: string
+  title: string
   promptIDs: string[]
 }
-export interface CurrentInfo {
+export interface EditorPromptState {
+  code: string
   articleID: string
 }
 export interface AppState {
@@ -19,7 +21,7 @@ export interface AppState {
     prompts: EntityState<Prompt>
   }
   modules: {
-    editorPrompt: null
+    editorPrompt: EditorPromptState
     modalArticles: null
     modalSetting: null
   }

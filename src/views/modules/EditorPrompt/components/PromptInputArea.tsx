@@ -1,8 +1,18 @@
+import { RD } from '@/core'
+import { AppState } from '@/interfaces/core.interface'
 import { Box, Button, Group, Paper } from '@mantine/core'
 import { dracula } from '@uiw/codemirror-theme-dracula'
 import CodeMirror from '@uiw/react-codemirror'
-import React, { FC, useCallback } from 'react'
+import React, { FC, useState } from 'react'
+import { useStore } from 'react-redux'
+const useHook = () => {
+  const { getPromptEdgeError, getPromptPairError } = RD.HELPER.CODE_CHECK
+  const { modules, shared } = useStore<AppState>().getState()
+  const d = creatoract
+  console.info(' watchThis :', modules, shared)
+}
 export const PromptInputArea: FC = () => {
+  useHook()
   return (
     <Box className='mh-100vh h-100vh'>
       <Box>
@@ -15,9 +25,7 @@ export const PromptInputArea: FC = () => {
   )
 }
 const CodeMr: FC = () => {
-  const onChange = useCallback((value: string, viewUpdate: unknown) => {
-    console.log('value:', value)
-  }, [])
+  const onChange = (value: string): void => {}
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
   return <CodeMirror placeholder={defaultText} maxHeight={maxHeight} onChange={onChange} theme={dracula} />

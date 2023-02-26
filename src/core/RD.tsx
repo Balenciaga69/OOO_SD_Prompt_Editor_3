@@ -1,11 +1,14 @@
+import { CodeCheckFuncs } from '@/utils/codeCheck'
+
 /**
  * @description ResourceData
  */
 export class RD {
   static AUTHOR = {
-    WEB_NAME: '咒語小幫手 v1.0',
-    GITHUB_URL: 'https://github.com/Hex-Zhou/SP-09-Prompt-Formatter-React',
+    WEB_NAME: '咒語助手 v1.0',
+    GITHUB_URL: 'https://github.com/emilioCodigo/GK-01-ProperSwitch',
     UPDATE_VERSION: '2023/02/28',
+    AUTHOR_NAME: 'Emilio Gonzales',
   } as const
   static PAGE_LINK = {
     PROMPT: 'prompt',
@@ -16,12 +19,15 @@ export class RD {
   } as const
   static STYLE = {
     NAV_BAR: {
-      W: 60,
+      W: 50,
     },
     FOOTER: {
       H: 120,
     },
   }
+  static HELPER = {
+    CODE_CHECK: CodeCheckFuncs,
+  } as const
   static IMG = {
     GITHUB_BLACK: new URL('../assets/image/github-black.svg', import.meta.url).href,
     GITHUB_WHITE: new URL('../assets/image/github-white.svg', import.meta.url).href,
