@@ -4,10 +4,10 @@ import { ActionIcon, Box, Card, Flex, Input, ScrollArea } from '@mantine/core'
 import { nanoid } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import React, { FC, useState } from 'react'
-import { DragCardList } from './DragCardList'
 import { Keen3DCarousel } from './Keen3DCarousel'
+import { AreaDragCardGrid } from './AreaDragCardGrid'
 
-export const PromptVisualArea: FC = () => {
+export const BlockTagVisual: FC = () => {
   const [items, setItems] = useState<Array<string>>(['???'])
   // FIXME:Redux by CaiChengYou
   const plus = (): void => {
@@ -25,7 +25,7 @@ export const PromptVisualArea: FC = () => {
       {items.length && (
         <Keen3DCarousel>
           {_.map(items, (id) => (
-            <VisualPaper key={id} handleClickPlusIcon={plus} handleClickMinusIcon={minus} id={id} />
+            <VisualItem key={id} handleClickPlusIcon={plus} handleClickMinusIcon={minus} id={id} />
           ))}
         </Keen3DCarousel>
       )}
@@ -33,13 +33,13 @@ export const PromptVisualArea: FC = () => {
   )
 }
 
-interface VisualPaperProps {
+interface VisualItemProps {
   id: string
   handleClickPlusIcon: () => void
   handleClickMinusIcon: (id: string) => void
 }
 
-const VisualPaper: FC<VisualPaperProps> = (props) => {
+const VisualItem: FC<VisualItemProps> = (props) => {
   const { id, handleClickMinusIcon, handleClickPlusIcon } = props
 
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
@@ -52,7 +52,7 @@ const VisualPaper: FC<VisualPaperProps> = (props) => {
 
   const DragSection: FC = () => (
     <Card.Section inheritPadding className='flex-grow-1'>
-      <DragCardList />
+      <AreaDragCardGrid />
     </Card.Section>
   )
 
@@ -71,7 +71,7 @@ const VisualPaper: FC<VisualPaperProps> = (props) => {
     </Box>
   )
   return (
-    <Card h='100%' style={{ backgroundColor: '#1a1b1e60' }} withBorder className='VisualPaper overflow-visible'>
+    <Card h='100%' style={{ backgroundColor: '#1a1b1e60' }} withBorder className='VisualItem overflow-visible'>
       <ScrollArea type='never' h='100%'>
         <NamingSection />
         <DragSection />

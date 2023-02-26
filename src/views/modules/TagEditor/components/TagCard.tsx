@@ -3,10 +3,10 @@ import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Card, Flex, Group, HoverCard, Table, Text } from '@mantine/core'
 import _ from 'lodash'
 import React, { FC, ReactNode, useEffect, useState } from 'react'
-interface PromptInfoCardProps {
+interface TagCardInfo {
   name: string
 }
-export const PromptInfoCard: FC<PromptInfoCardProps> = (props) => {
+export const TagCard: FC<TagCardInfo> = (props) => {
   const [shortName, setShortName] = useState('MasterPiece')
   const [numWeight, setNumWeight] = useState(1)
   const [bracketWeight, setBracketWeight] = useState(0)

@@ -1,28 +1,25 @@
 import { EntityState } from '@reduxjs/toolkit'
-
-export interface Prompt {
-  id: string
-  text: string
-  numW: number
-  bracketW: number
-}
-export interface Article {
-  id: string
-  title: string
-  promptIDs: string[]
-}
-export interface EditorPromptState {
+export interface TagEditorState {
   code: string
-  articleID: string
+  blockID: string
 }
 export interface AppState {
   shared: {
-    articles: EntityState<Article>
-    prompts: EntityState<Prompt>
+    tag: EntityState<Tag>
+    tagBlock: EntityState<TagBlock>
   }
   modules: {
-    editorPrompt: EditorPromptState
-    modalArticles: null
-    modalSetting: null
+    tagEditor: TagEditorState
   }
+}
+export interface Tag {
+  id: string
+  title: string
+  bracketWeight: number
+  numberWeight: number
+}
+export interface TagBlock {
+  id: string
+  title: string
+  tagIDs: string[]
 }

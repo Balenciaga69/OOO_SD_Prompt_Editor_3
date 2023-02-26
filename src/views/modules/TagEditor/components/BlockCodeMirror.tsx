@@ -6,12 +6,10 @@ import CodeMirror from '@uiw/react-codemirror'
 import React, { FC, useState } from 'react'
 import { useStore } from 'react-redux'
 const useHook = () => {
-  const { getPromptEdgeError, getPromptPairError } = RD.HELPER.CODE_CHECK
+  const { getCodeEdgeError: getPromptEdgeError, getCodePairError: getPromptPairError } = RD.FUNCS.CODE_SYNTAX_CHECK
   const { modules, shared } = useStore<AppState>().getState()
-  const d = creatoract
-  console.info(' watchThis :', modules, shared)
 }
-export const PromptInputArea: FC = () => {
+export const BlockCodeMirror: FC = () => {
   useHook()
   return (
     <Box className='mh-100vh h-100vh'>

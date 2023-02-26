@@ -1,5 +1,5 @@
 import _ from 'lodash'
-interface PromptError {
+interface CodeError {
   i: number
   expected: string
   char: string
@@ -12,7 +12,7 @@ const pair: Record<string, string> = {
   '[': ']',
   '{': '}',
 }
-function getPromptPairError(text: string): PromptError | null {
+function getCodePairError(text: string): CodeError | null {
   const stack: Bracket[] = []
   for (let i = 0; i < text.length; i++) {
     const char = text[i]
@@ -33,9 +33,9 @@ function getPromptPairError(text: string): PromptError | null {
   }
   return null
 }
-function getPromptEdgeError(text: string): Omit<PromptError, 'expected'> | null {
+function getCodeEdgeError(text: string): Omit<CodeError, 'expected'> | null {
   const REGEX = /[^,，\\([{\s:|]\s*[([{]|[^\\][\])}]\s*[^,，)\]}\s:|]/
   const result = text.match(REGEX)
   return result ? { i: _.toNumber(result.index), char: result[0] } : null
 }
-export const CodeCheckFuncs = { getPromptPairError, getPromptEdgeError }
+export const codeSyntaxCheckFuncs = { getCodePairError, getCodeEdgeError }

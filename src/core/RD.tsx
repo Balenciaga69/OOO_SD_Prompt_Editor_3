@@ -1,4 +1,4 @@
-import { CodeCheckFuncs } from '@/utils/codeCheck'
+import { codeSyntaxCheckFuncs } from '@/utils/codeCheck'
 
 /**
  * @description ResourceData
@@ -11,9 +11,9 @@ export class RD {
     AUTHOR_NAME: 'Emilio Gonzales',
   } as const
   static PAGE_LINK = {
-    PROMPT: 'prompt',
-    PROMPT_CODE: 'prompt#code',
-    PROMPT_VISUAL: 'prompt#visual',
+    TAG: 'tag',
+    TAG_VISUAL: 'tag#visual',
+    TAG_EDITOR: 'tag#editor',
     INTRO: 'intro',
     ERROR: 'error',
   } as const
@@ -25,8 +25,8 @@ export class RD {
       H: 120,
     },
   }
-  static HELPER = {
-    CODE_CHECK: CodeCheckFuncs,
+  static FUNCS = {
+    CODE_SYNTAX_CHECK: codeSyntaxCheckFuncs,
   } as const
   static IMG = {
     GITHUB_BLACK: new URL('../assets/image/github-black.svg', import.meta.url).href,

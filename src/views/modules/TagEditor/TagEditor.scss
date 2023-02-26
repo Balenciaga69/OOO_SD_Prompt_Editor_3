@@ -1,4 +1,4 @@
-.VisualPaper {
+.VisualItem {
   position: relative;
   .plus,
   .minus {
@@ -13,7 +13,7 @@
     bottom: -2%;
   }
 }
-.KeenCardCarousel {
+.Keen3DCarousel {
   .left,
   .right {
     position: absolute;
@@ -28,7 +28,7 @@
     right: -1%;
   }
 }
-.DragCardListGrid {
+.AreaDragCardGrid {
   .dragging {
     z-index: 999;
   }

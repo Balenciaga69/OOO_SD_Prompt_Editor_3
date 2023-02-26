@@ -11,7 +11,7 @@ interface IconItemProps {
 export const NavBar: FC = () => {
   const { W } = RD.STYLE.NAV_BAR
 
-  const { PROMPT_CODE, PROMPT_VISUAL, INTRO } = RD.PAGE_LINK
+  const { TAG_VISUAL, TAG_EDITOR, INTRO } = RD.PAGE_LINK
 
   const { GITHUB_WHITE } = RD.IMG
 
@@ -25,10 +25,10 @@ export const NavBar: FC = () => {
       <IconWrapper>
         <SFIcon icon='faTag' />
       </IconWrapper>
-      <IconWrapper to={PROMPT_VISUAL}>
+      <IconWrapper to={TAG_VISUAL}>
         <SFIcon icon='faChartSimple' />
       </IconWrapper>
-      <IconWrapper to={PROMPT_CODE}>
+      <IconWrapper to={TAG_EDITOR}>
         <SFIcon icon='faCode' />
       </IconWrapper>
       <IconWrapper>

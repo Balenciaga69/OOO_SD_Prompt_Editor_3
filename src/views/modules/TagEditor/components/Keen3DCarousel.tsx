@@ -85,7 +85,7 @@ export const Keen3DCarousel: FC<Props> = (props) => {
     </>
   )
   return (
-    <Box className='wrapper KeenCardCarousel'>
+    <Box className='wrapper Keen3DCarousel'>
       <Box className='scene'>
         <IconBoxes />
         <div className='keen-slider' ref={sliderRef}>

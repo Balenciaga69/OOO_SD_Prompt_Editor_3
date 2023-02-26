@@ -1,17 +1,17 @@
 import { Box } from '@mantine/core'
 import React, { FC, useEffect, useRef } from 'react'
-import { PromptInputArea } from './PromptInputArea'
-import { PromptVisualArea } from './PromptVisualArea'
-import '../EditorPrompt.scss'
+import { BlockCodeMirror } from './BlockCodeMirror'
+import { BlockTagVisual } from './BlockTagVisual'
+import '../TagEditor.scss'
 import { useLocation } from 'react-router-dom'
 
-export const EditorPrompt: FC = () => {
+export const TagEditor: FC = () => {
   const location = useLocation()
   const codeRef = useRef<HTMLDivElement>(null)
   const visualRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!codeRef.current || !visualRef.current) return
-    if (location.hash === '#code') {
+    if (location.hash === '#editor') {
       codeRef.current.scrollIntoView({ behavior: 'smooth' })
     }
     if (location.hash === '#visual') {
@@ -21,10 +21,10 @@ export const EditorPrompt: FC = () => {
   return (
     <Box px='xl'>
       <Box className='h-100vh mh-100vh' ref={visualRef}>
-        <PromptVisualArea />
+        <BlockTagVisual />
       </Box>
       <Box className='h-100vh mh-100vh' ref={codeRef}>
-        <PromptInputArea />
+        <BlockCodeMirror />
       </Box>
     </Box>
   )
