@@ -1,13 +1,22 @@
 import { SFIcon } from '@/views/shared/SFIcon'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
-import { ActionIcon, Box, Card, Flex, Input, ScrollArea } from '@mantine/core'
+import { ActionIcon, Box, Card, Input, ScrollArea } from '@mantine/core'
 import { nanoid } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import React, { FC, useState } from 'react'
-import { Keen3DCarousel } from './Keen3DCarousel'
+import React, { FC, useMemo, useState } from 'react'
 import { AreaDragCardGrid } from './AreaDragCardGrid'
-
+import { Keen3DCarousel } from './Keen3DCarousel'
+import { useTagEditor } from '../useTagEditor'
+import { TagBlock } from '@/interfaces/core.interface'
+const useBlockTagVisual = () => {
+  const { dispatch, myActions, myState, sharedState } = useTagEditor()
+  const tagBlockEntities = useMemo(() => {
+    return _.filter(sharedState.tagBlock.entities, (e) => !_.isNil(e)) as TagBlock[]
+  }, [sharedState])
+  return { tagBlockEntities }
+}
 export const BlockTagVisual: FC = () => {
+  const { tagBlockEntities } = useBlockTagVisual()
   const [items, setItems] = useState<Array<string>>(['???'])
   // FIXME:Redux by CaiChengYou
   const plus = (): void => {
@@ -22,10 +31,10 @@ export const BlockTagVisual: FC = () => {
   }
   return (
     <Box py='xl' h='100%'>
-      {items.length && (
+      {tagBlockEntities.length && (
         <Keen3DCarousel>
-          {_.map(items, (id) => (
-            <VisualItem key={id} handleClickPlusIcon={plus} handleClickMinusIcon={minus} id={id} />
+          {_.map(tagBlockEntities, (entity) => (
+            <VisualItem key={entity.id} handleClickPlusIcon={plus} handleClickMinusIcon={minus} />
           ))}
         </Keen3DCarousel>
       )}
@@ -34,28 +43,30 @@ export const BlockTagVisual: FC = () => {
 }
 
 interface VisualItemProps {
-  id: string
   handleClickPlusIcon: () => void
   handleClickMinusIcon: (id: string) => void
 }
+const useVisualItem = () => {
+  const { dispatch, myActions, myState, sharedState } = useTagEditor()
+}
 
 const VisualItem: FC<VisualItemProps> = (props) => {
-  const { id, handleClickMinusIcon, handleClickPlusIcon } = props
-
+  const { handleClickMinusIcon, handleClickPlusIcon } = props
+  const handleTitleChange = (title: string) => {
+    console.info(' watchThis title', title)
+  }
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
 
   const NamingSection: FC = () => (
     <Card.Section inheritPadding>
-      <Input size='xl' fw='bolder' variant='unstyled' placeholder='為這項集合命名......' maxLength={10} />
+      <Input size='xl' fw='bolder' variant='unstyled' placeholder='為這項集合命名......' maxLength={10} value={code} onChange={(e) => handleTitleChange(e.target.value)} />
     </Card.Section>
   )
-
   const DragSection: FC = () => (
     <Card.Section inheritPadding className='flex-grow-1'>
       <AreaDragCardGrid />
     </Card.Section>
   )
-
   const ActionSection: FC = () => (
     <Box>
       <Box className='plus'>

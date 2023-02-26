@@ -1,44 +1,74 @@
-import { RD } from '@/core'
-import { AppState } from '@/interfaces/core.interface'
+import { TagEditorState } from '@/interfaces/core.interface'
 import { Box, Button, Group, Paper } from '@mantine/core'
+import { ActionCreatorWithPayload, bindActionCreators } from '@reduxjs/toolkit'
 import { dracula } from '@uiw/codemirror-theme-dracula'
 import CodeMirror from '@uiw/react-codemirror'
-import React, { FC, useState } from 'react'
-import { useStore } from 'react-redux'
+import _ from 'lodash'
+import React, { FC, useEffect } from 'react'
+import { useTagEditor } from '../useTagEditor'
+
 const useHook = () => {
-  const { getCodeEdgeError: getPromptEdgeError, getCodePairError: getPromptPairError } = RD.FUNCS.CODE_SYNTAX_CHECK
-  const { modules, shared } = useStore<AppState>().getState()
+  const { dispatch, myActions, myState, currTagList } = useTagEditor()
+  const { blockID, code } = myState
+  const actionCreators = bindActionCreators({ ...myActions }, dispatch)
+  // when block changed , update code state
+  useEffect(() => {
+    const tagText = currTagList.join(`,\n`)
+    actionCreators.setState({ code: tagText })
+  }, [blockID])
+  return { blockID, code, ...actionCreators }
 }
 export const BlockCodeMirror: FC = () => {
-  useHook()
   return (
     <Box className='mh-100vh h-100vh'>
       <Box>
         <Box mb='md'>
-          <ControlPaper />
+          <ControlPanel />
         </Box>
-        <CodeMr />
+        <CodePanel />
       </Box>
     </Box>
   )
 }
-const CodeMr: FC = () => {
-  const onChange = (value: string): void => {}
+const CodePanel: FC = () => {
+  const { setState, code } = useHook()
+  const handleCodeChange = (code: string): void => {
+    setState({ code })
+  }
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
-  return <CodeMirror placeholder={defaultText} maxHeight={maxHeight} onChange={onChange} theme={dracula} />
+  return <CodeMirror value={code} placeholder={defaultText} maxHeight={maxHeight} onChange={handleCodeChange} theme={dracula} />
 }
-const ControlPaper: FC = () => {
+const ControlPanel: FC = () => {
+  const { setState, code, submitCode } = useHook()
+  const handleSplitClick = () => {
+    const nextCode = _.replace(code, /,/g, ',\n')
+    setState({ code: nextCode })
+  }
+  const handleUnderScoreClick = () => {
+    const nextCode = _.replace(code, /[^\S\n]/g, '_')
+    setState({ code: nextCode })
+  }
+  const handleTrimClick = () => {
+    const nextCode = _.replace(code, /\s\s/g, ` `)
+    setState({ code: nextCode })
+  }
+  const handleRefreshClick = () => {
+    submitCode({ code })
+  }
   return (
     <Paper radius='xl' p='sm'>
       <Group>
-        <Button variant='filled' w='6rem' radius='xl' color='gray'>
+        <Button variant='filled' w='6rem' radius='xl' color='gray' onClick={handleSplitClick}>
           Split
         </Button>
-        <Button variant='filled' w='6rem' radius='xl' color='gray'>
-          Min
+        <Button variant='filled' w='6rem' radius='xl' color='gray' onClick={handleTrimClick}>
+          Trim
         </Button>
-        <Button ml='auto' variant='filled' w='6rem' radius='xl' color='yellow'>
+        <Button variant='filled' w='6rem' radius='xl' color='gray' onClick={handleUnderScoreClick}>
+          ToUL
+        </Button>
+        <Button ml='auto' variant='filled' w='6rem' radius='xl' color='yellow' onClick={handleRefreshClick}>
           Refresh
         </Button>
       </Group>

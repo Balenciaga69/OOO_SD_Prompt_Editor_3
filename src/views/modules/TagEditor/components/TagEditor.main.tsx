@@ -1,11 +1,21 @@
 import { Box } from '@mantine/core'
+import { bindActionCreators } from '@reduxjs/toolkit'
 import React, { FC, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
+import '../TagEditor.scss'
+import { useTagEditor } from '../useTagEditor'
 import { BlockCodeMirror } from './BlockCodeMirror'
 import { BlockTagVisual } from './BlockTagVisual'
-import '../TagEditor.scss'
-import { useLocation } from 'react-router-dom'
-
+const useHook = () => {
+  const { dispatch, myActions } = useTagEditor()
+  const { initMain } = myActions
+  const actionCreators = bindActionCreators({ initMain }, dispatch)
+  useEffect(() => {
+    actionCreators.initMain()
+  }, [])
+}
 export const TagEditor: FC = () => {
+  useHook()
   const location = useLocation()
   const codeRef = useRef<HTMLDivElement>(null)
   const visualRef = useRef<HTMLDivElement>(null)
@@ -21,7 +31,7 @@ export const TagEditor: FC = () => {
   return (
     <Box px='xl'>
       <Box className='h-100vh mh-100vh' ref={visualRef}>
-        <BlockTagVisual />
+        {/* <BlockTagVisual /> */}
       </Box>
       <Box className='h-100vh mh-100vh' ref={codeRef}>
         <BlockCodeMirror />
