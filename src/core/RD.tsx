@@ -1,5 +1,5 @@
 import { codeSyntaxCheckFuncs } from '@/utils/codeCheck'
-import { parse } from '@/utils/parser'
+import { doNotUseThisFunctionBeCuzThisFunctionIsBeDeprected } from '@/utils/parser'
 
 /**
  * @description ResourceData
@@ -28,7 +28,6 @@ export class RD {
   }
   static FUNCS = {
     CODE_SYNTAX_CHECK: codeSyntaxCheckFuncs,
-    PARSE: parse,
   } as const
   static IMG = {
     GITHUB_BLACK: new URL('../assets/image/github-black.svg', import.meta.url).href,

@@ -1,11 +1,12 @@
 import { SFIcon } from '@/views/shared/SFIcon'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box } from '@mantine/core'
+import { bindActionCreators } from '@reduxjs/toolkit'
 import { KeenSliderPlugin, useKeenSlider } from 'keen-slider/react'
 import _ from 'lodash'
-import React, { FC, ReactNode, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useTagEditor } from '../useTagEditor'
-import { bindActionCreators } from '@reduxjs/toolkit'
+import { CarouselItem } from './CarouselItem'
 
 const MutationPlugin: KeenSliderPlugin = (slider) => {
   const config = { childList: true }
@@ -39,24 +40,15 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
   }
 }
 
-interface Props {
-  children: ReactNode[]
-}
 const useKeen3DCarousel = () => {
-  const { allTagBlock, myActions, dispatch } = useTagEditor()
+  const { allTagBlock, myActions, dispatch, myState } = useTagEditor()
   const { setState } = myActions
   const actionCreators = bindActionCreators({ setState }, dispatch)
-  return { allTagBlock, ...actionCreators }
+  return { allTagBlock, ...actionCreators, myState }
 }
 
-export const Keen3DCarousel: FC<Props> = (props) => {
-  const [currentSlide, setCurrentSlide] = useState(0)
+export const Keen3DCarousel: FC = () => {
   const { allTagBlock, setState } = useKeen3DCarousel()
-  useEffect(() => {
-    const blockID = allTagBlock[currentSlide].id
-    setState({ blockID })
-  }, [currentSlide])
-  const { children } = props
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -65,24 +57,30 @@ export const Keen3DCarousel: FC<Props> = (props) => {
       mode: 'snap',
       drag: false,
       initial: 0,
-      slideChanged(slider) {
-        setCurrentSlide(slider.track.details.rel)
+      detailsChanged(slider) {
+        setRel(slider.track.details.rel)
       },
     },
     [carouselPlugin, MutationPlugin]
   )
   const changeSlide = (dir: 'left' | 'right'): void => {
-    if (children.length <= 1) return
     dir === 'left' ? instanceRef.current?.prev() : instanceRef.current?.next()
   }
+  const [rel, setRel] = useState(0)
+  useEffect(() => {
+    if (allTagBlock[rel]) {
+      const blockID = allTagBlock[rel].id
+      setState({ blockID })
+    }
+  }, [allTagBlock, rel])
   return (
     <Box className='wrapper Keen3DCarousel'>
       <Box className='scene'>
-        <IconBoxes changeSlide={changeSlide} />
+        {allTagBlock.length > 1 && <IconBoxes changeSlide={changeSlide} />}
         <div className='keen-slider' ref={sliderRef}>
-          {_.map([...children], (child, i) => (
+          {_.map(allTagBlock, (tagBlock, i) => (
             <div key={i} className='carousel__cell'>
-              {child}
+              <CarouselItem tagBlock={tagBlock} />
             </div>
           ))}
         </div>
@@ -99,12 +97,12 @@ const IconBoxes: FC<IconBoxesProps> = (props) => {
   return (
     <>
       <Box className='left'>
-        <ActionIcon variant='transparent' radius='xl' size='xl' onClick={(): void => changeSlide('left')}>
+        <ActionIcon variant='transparent' radius='xl' size='xl' onClick={() => changeSlide('left')}>
           <SFIcon icon='faChevronLeft' iconProps={iconProps} />
         </ActionIcon>
       </Box>
       <Box className='right'>
-        <ActionIcon variant='transparent' radius='xl' size='xl' onClick={(): void => changeSlide('right')}>
+        <ActionIcon variant='transparent' radius='xl' size='xl' onClick={() => changeSlide('right')}>
           <SFIcon icon='faChevronRight' iconProps={iconProps} />
         </ActionIcon>
       </Box>

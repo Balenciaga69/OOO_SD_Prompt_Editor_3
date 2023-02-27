@@ -1,10 +1,11 @@
-import { tagBlockSlice, tagSlice } from './../../../core/slices'
 import { RD, RootState, rootSlices } from '@/core'
-import { Tag, TagEditorState } from '@/interfaces/core.interface'
-import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
+import { Tag, TagBlock, TagEditorState } from '@/interfaces/core.interface'
+import { EntityState, PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import { SagaIterator } from 'redux-saga'
 import { put, select, takeEvery } from 'redux-saga/effects'
+import { tagBlockSlice, tagSlice } from './../../../core/slices'
+import { simpleTagParserFromAngular } from './../../../utils/old-parser-from-angular'
 const initialState: TagEditorState = {
   code: '',
   blockID: '',
@@ -19,9 +20,8 @@ export const tagEditorSlice = createSlice({
     initMain() {
       undefined
     },
-    submitCode(state, { payload }: PayloadAction<{ code: string }>) {
-      payload
-      return state
+    submitCode() {
+      undefined
     },
   },
 })
@@ -38,16 +38,22 @@ function* initMain(): SagaIterator {
     yield put(rootSlices.tagEditorSlice.actions.setState({ blockID: newID }))
   }
 }
-function* submitCode({ payload }: PayloadAction<{ code: string }>): SagaIterator {
+function* submitCode(): SagaIterator {
   const { getCodeEdgeError, getCodePairError } = RD.FUNCS.CODE_SYNTAX_CHECK
-  const { code } = payload
+  const tagBlockState = (yield select((state: RootState) => state.shared.tagBlock)) as unknown as EntityState<TagBlock>
   const myState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
+  const myTagBlockDetail = tagBlockState.entities[myState.blockID] as TagBlock
+  const { tagIDs } = myTagBlockDetail
+  const { code } = myState
   const edgeResult = getCodeEdgeError(code)
   const pairResult = getCodePairError(code)
-  const res = RD.FUNCS.PARSE(code)
-  for (const i in [0, 1, 2, 3, 4, 5]) {
-    const newTag: Tag = { id: String(i), bracketWeight: 0, numberWeight: 0, title: `標籤${i}` }
-    yield put(tagSlice.actions.addOne(newTag))
+  if (edgeResult && pairResult) return
+  const tagListWithoutID: Omit<Tag, 'id'>[] = simpleTagParserFromAngular(code)
+  const IDs = _.times(tagListWithoutID.length, () => nanoid())
+  const tagList = _.map(tagListWithoutID, (t, i) => ({ ...t, id: IDs[i] }))
+  if (!_.isEmpty(tagList)) {
+    yield put(tagSlice.actions.addMany(tagList))
   }
-  yield put(tagBlockSlice.actions.updateOne({ changes: { tagIDs: ['0', '1', '2', '3', '4'] }, id: myState.blockID }))
+  yield put(tagSlice.actions.removeMany(tagIDs))
+  yield put(tagBlockSlice.actions.updateOne({ changes: { tagIDs: IDs }, id: myState.blockID }))
 }

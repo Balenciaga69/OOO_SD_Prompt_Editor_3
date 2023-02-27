@@ -16,7 +16,7 @@ export const useTagEditor = () => {
   const currTagList = useMemo(() => {
     if (!currTagBlock) return []
     return _.compact(_.map(currTagBlock.tagIDs, (id) => tagState.entities[id]))
-  }, [currTagBlock])
+  }, [currTagBlock, tagState])
   const allTagBlock = useMemo(() => {
     return _.filter(tagBlockState.entities, (e) => !_.isNil(e)) as TagBlock[]
   }, [tagBlockState])

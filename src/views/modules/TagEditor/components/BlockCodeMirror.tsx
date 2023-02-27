@@ -6,18 +6,14 @@ import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
 import { useTagEditor } from '../useTagEditor'
 import { useDebouncedState } from '@mantine/hooks'
-const useHook = () => {
+import { simpleTagsToCode } from '@/utils/old-parser-from-angular'
+const useBlockCodeMirror = () => {
   const { dispatch, myActions, myState, currTagList } = useTagEditor()
   const { blockID, code } = myState
-  const actionCreators = bindActionCreators({ ...myActions }, dispatch)
-  // when block changed , update code state
-  useEffect(() => {
-    const tagText = _.map(currTagList, 'title').join(`,\n`)
-    console.info(' watchThis tagText', tagText)
-    if (_.isEmpty(tagText)) return
-    actionCreators.setState({ code: tagText })
-  }, [blockID])
-  return { blockID, code, ...actionCreators }
+  const { setState, submitCode } = myActions
+  const actionCreators = bindActionCreators({ setState, submitCode }, dispatch)
+
+  return { blockID, currTagList, code, ...actionCreators }
 }
 export const BlockCodeMirror: FC = () => {
   return (
@@ -32,19 +28,27 @@ export const BlockCodeMirror: FC = () => {
   )
 }
 const CodePanel: FC = () => {
-  const { setState, code } = useHook()
+  const { setState, code, currTagList } = useBlockCodeMirror()
   const [debCode, setDebCode] = useDebouncedState(code, 200)
   useEffect(() => {
     setState({ code: debCode })
   }, [debCode])
+  useEffect(() => {
+    setDebCode(code)
+  }, [code])
+  useEffect(() => {
+    // when block changed , update code state
+    const nextCode = simpleTagsToCode(currTagList, 'split')
+    setDebCode(nextCode)
+  }, [currTagList])
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
   return <CodeMirror value={debCode} placeholder={defaultText} maxHeight={maxHeight} onChange={setDebCode} theme={dracula} />
 }
 const ControlPanel: FC = () => {
-  const { setState, code, submitCode } = useHook()
+  const { setState, code, submitCode, currTagList } = useBlockCodeMirror()
   const handleSplitClick = () => {
-    const nextCode = _.replace(code, /,/g, ',\n')
+    const nextCode = simpleTagsToCode(currTagList, 'split')
     setState({ code: nextCode })
   }
   const handleUnderScoreClick = () => {
@@ -52,11 +56,11 @@ const ControlPanel: FC = () => {
     setState({ code: nextCode })
   }
   const handleTrimClick = () => {
-    const nextCode = _.replace(code, /\s\s/g, ` `)
+    const nextCode = simpleTagsToCode(currTagList, 'zip')
     setState({ code: nextCode })
   }
   const handleRefreshClick = () => {
-    submitCode({ code })
+    submitCode()
   }
   return (
     <Paper radius='xl' p='sm'>

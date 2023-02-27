@@ -20,3 +20,9 @@ $widths: 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
 .z-0 {
   z-index: 0;
 }
+.z-999 {
+  z-index: 999;
+}
+.line-break {
+  line-break: anywhere;
+}

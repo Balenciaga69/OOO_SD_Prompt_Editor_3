@@ -7,7 +7,9 @@ export const tagSlice = createSlice({
   reducers: {
     addOne: TagAdapter.addOne,
     removeOne: TagAdapter.removeOne,
+    removeMany: TagAdapter.removeMany,
     updateOne: TagAdapter.updateOne,
+    addMany: TagAdapter.addMany,
   },
 })
 const TagBlockAdapter = createEntityAdapter<TagBlock>()
