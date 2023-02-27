@@ -112,7 +112,7 @@ const generateTag = _.flow([
 export const simpleTagsToCode = (tags: Tag[], mode: 'split' | 'zip' = 'zip') => {
   let finalResult = ''
   _.forEach(tags, (e, i) => {
-    let tagStr = e.title
+    let tagStr = _.trim(e.title)
     let bracketWeight = e.bracketWeight
     // * * * * * 括號權重 * * * * *
     while (bracketWeight !== 0) {
