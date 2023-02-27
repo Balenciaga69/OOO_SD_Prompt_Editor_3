@@ -17,6 +17,7 @@ export const AppRoutes: FC = () => {
           <Route path={TAG} element={<TagEditor />} />
           <Route path={TAG_EDITOR} element={<TagEditor />} />
           <Route path={TAG_VISUAL} element={<TagEditor />} />
+          <Route path='' element={<Navigate to={`/${TAG_EDITOR}`} />} />
           <Route path='*' element={<Navigate to={`/${ERROR}`} />} />
         </Route>
       </Routes>

@@ -1,5 +1,4 @@
 import { codeSyntaxCheckFuncs } from '@/utils/codeCheck'
-import { doNotUseThisFunctionBeCuzThisFunctionIsBeDeprected } from '@/utils/parser'
 
 /**
  * @description ResourceData
@@ -10,6 +9,11 @@ export class RD {
     GITHUB_URL: 'https://github.com/emilioCodigo/GK-01-ProperSwitch',
     UPDATE_VERSION: '2023/02/28',
     AUTHOR_NAME: 'Emilio Gonzales',
+    FACEBOOK: 'https://www.facebook.com/profile.php?id=100012966612095',
+    INSTAGRAM: 'https://www.instagram.com/dubstepill/',
+    ABOUT_ME: 'https://hex-zhou-web.netlify.app',
+    VERSION_1: 'https://web-ui-tag-helper-v1.netlify.app',
+    VERSION_2: 'https://web-ui-good-friend.netlify.app/',
   } as const
   static PAGE_LINK = {
     TAG: 'tag',

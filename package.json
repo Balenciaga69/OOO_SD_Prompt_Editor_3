@@ -25,6 +25,7 @@
     "@popperjs/core": "^2.11.6",
     "@redux-devtools/core": "^3.13.1",
     "@reduxjs/toolkit": "^1.9.2",
+    "@sweetalert2/themes": "^5.0.15",
     "@types/lodash": "^4.14.191",
     "@uiw/codemirror-theme-atomone": "^4.19.9",
     "@uiw/codemirror-theme-dracula": "^4.19.9",
@@ -52,9 +53,11 @@
     "react-svg": "^16.1.0",
     "redux": "^4.2.1",
     "redux-saga": "^1.2.2",
-    "sass": "^1.57.1"
+    "sass": "^1.57.1",
+    "sweetalert2": "^11.7.2"
   },
   "devDependencies": {
+    "@types/nearley": "^2.11.2",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
@@ -62,7 +65,6 @@
     "@vitejs/plugin-react": "^3.0.0",
     "eslint": "^8.33.0",
     "typescript": "^4.9.3",
-    "@types/nearley": "^2.11.2",
     "vite": "^4.0.0",
     "vite-tsconfig-paths": "^4.0.5"
   }

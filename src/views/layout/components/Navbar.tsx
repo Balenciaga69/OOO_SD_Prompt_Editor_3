@@ -24,20 +24,23 @@ export const NavBar: FC = () => {
   const { GITHUB_URL } = RD.AUTHOR
 
   const TopBox: FC = () => (
-    <Box className='text-center'>
-      <IconWrapper label='Mixing'>
+    <>
+      <Box h={50} />
+      <Box className='text-center'>
+        {/* <IconWrapper label='Mixing'>
         <SFIcon icon='faTag' />
-      </IconWrapper>
-      <IconWrapper label='Sorting' to={TAG_VISUAL}>
-        <SFIcon icon='faChartSimple' />
-      </IconWrapper>
-      <IconWrapper label='Typing' to={TAG_EDITOR}>
-        <SFIcon icon='faCode' />
-      </IconWrapper>
-      <IconWrapper label='Setting'>
+      </IconWrapper> */}
+        <IconWrapper label='Sorting' to={TAG_VISUAL}>
+          <SFIcon icon='faChartSimple' />
+        </IconWrapper>
+        <IconWrapper label='Typing' to={TAG_EDITOR}>
+          <SFIcon icon='faCode' />
+        </IconWrapper>
+        {/* <IconWrapper label='Setting'>
         <SFIcon icon='faGear' />
-      </IconWrapper>
-    </Box>
+      </IconWrapper> */}
+      </Box>
+    </>
   )
   const BottomBox: FC = () => (
     <Box mt='auto'>

@@ -17,6 +17,7 @@ specifiers:
   '@popperjs/core': ^2.11.6
   '@redux-devtools/core': ^3.13.1
   '@reduxjs/toolkit': ^1.9.2
+  '@sweetalert2/themes': ^5.0.15
   '@types/lodash': ^4.14.191
   '@types/nearley': ^2.11.2
   '@types/react': ^18.0.26
@@ -52,6 +53,7 @@ specifiers:
   redux: ^4.2.1
   redux-saga: ^1.2.2
   sass: ^1.57.1
+  sweetalert2: ^11.7.2
   typescript: ^4.9.3
   vite: ^4.0.0
   vite-tsconfig-paths: ^4.0.5
@@ -73,8 +75,8 @@ dependencies:
   '@popperjs/core': 2.11.6
   '@redux-devtools/core': 3.13.1_bqc5wbq65zmqqpvwou42otfgj4
   '@reduxjs/toolkit': 1.9.2_k4ae6lp43ej6mezo3ztvx6pykq
+  '@sweetalert2/themes': 5.0.15_sweetalert2@11.7.2
   '@types/lodash': 4.14.191
-  '@types/nearley': 2.11.2
   '@uiw/codemirror-theme-atomone': 4.19.9_@codemirror+view@6.7.3
   '@uiw/codemirror-theme-dracula': 4.19.9_@codemirror+view@6.7.3
   '@uiw/react-codemirror': 4.19.7_vntmjfdugxvddyfi35qyogxqxy
@@ -102,8 +104,10 @@ dependencies:
   redux: 4.2.1
   redux-saga: 1.2.2
   sass: 1.57.1
+  sweetalert2: 11.7.2
 
 devDependencies:
+  '@types/nearley': 2.11.2
   '@types/react': 18.0.27
   '@types/react-dom': 18.0.10
   '@typescript-eslint/eslint-plugin': 5.49.0_rsaczafy73x3xqauzesvzbsgzy
@@ -1222,6 +1226,14 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@sweetalert2/themes/5.0.15_sweetalert2@11.7.2:
+    resolution: {integrity: sha512-uGU7CynpjRc3cllTqZEvXiZTpfQ6MN4faG+Tf0VFW81bLysCQm00iHS3NJLZx5STRfxpM5SzqeVXpAzJyTG/WA==}
+    peerDependencies:
+      sweetalert2: ^11.0.0
+    dependencies:
+      sweetalert2: 11.7.2
+    dev: false
+
   /@tanem/svg-injector/10.1.46:
     resolution: {integrity: sha512-UPsM4IXiQ8S9x9y19beIrTSqe8bzLYO6iwHTOob4bc6DkfNbokbgNqx8EK2A7banC9ysd0SPxQgEmRWWA33jFQ==}
     dependencies:
@@ -1247,7 +1259,7 @@ packages:
 
   /@types/nearley/2.11.2:
     resolution: {integrity: sha512-jeyIDNBxxyWyEk6HemDC+t32b4fxthVsgWDxf88qD2WpX0QpOyY8JvA80AElPTBGRUsO0EKnr6OeVOjK3ZDdnA==}
-    dev: false
+    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -3435,6 +3447,10 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  /sweetalert2/11.7.2:
+    resolution: {integrity: sha512-atPjDa3fv/4xwZpiAt7FZUgAhR5VAASiLP2hu7HUeVDXx+v4/9nD1W0u8xal1e9f2/qGh0DwTxPXPV9XoZIBvg==}
+    dev: false
 
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
