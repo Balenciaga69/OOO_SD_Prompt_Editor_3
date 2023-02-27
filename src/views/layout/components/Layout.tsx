@@ -1,5 +1,6 @@
+import { useMyLocal } from '@/core'
 import { AppShell, Box } from '@mantine/core'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Footer } from './Footer'
 import { NavBar } from './NavBar'
@@ -7,8 +8,14 @@ import { NavBar } from './NavBar'
 interface Main {
   main: { backgroundColor: string }
 }
-
+const useLayout = () => {
+  const { load } = useMyLocal()
+  useEffect(() => {
+    load()
+  }, [])
+}
 export const Layout: FC = () => {
+  useLayout()
   return (
     <>
       <AppShell

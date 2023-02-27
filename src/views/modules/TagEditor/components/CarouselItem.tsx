@@ -55,7 +55,7 @@ const NamingSection: FC<CarouselItemProps> = (props) => {
   }, [props])
   return (
     <Card.Section inheritPadding>
-      <Input size='xl' fw='bolder' variant='unstyled' placeholder='為這項集合命名......' maxLength={10} value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Input size='xl' fw='bolder' variant='unstyled' placeholder='My tag block name is...' maxLength={10} value={title} onChange={(e) => setTitle(e.target.value)} />
     </Card.Section>
   )
 }
@@ -69,7 +69,7 @@ const DragSection: FC<CarouselItemProps> = (props) => {
 }
 const ActionSection: FC<CarouselItemProps> = (props) => {
   const { tagBlock } = props
-  const { addOne, removeOne, allTagBlock, setMyState } = useCarouselItem()
+  const { addOne, removeOne, allTagBlock } = useCarouselItem()
   const handleAddClick = () => {
     const id = nanoid()
     addOne({ id, tagIDs: [], title: id })

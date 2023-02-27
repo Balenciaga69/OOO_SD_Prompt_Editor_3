@@ -31,6 +31,7 @@ export function* tagEditorSaga(): SagaIterator {
   yield takeEvery(actions.submitCode.type, submitCode)
 }
 function* initMain(): SagaIterator {
+  console.info(' watchThis  tagEditorSaga initMain')
   const myState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
   if (_.isEmpty(myState.blockID)) {
     const newID = nanoid()

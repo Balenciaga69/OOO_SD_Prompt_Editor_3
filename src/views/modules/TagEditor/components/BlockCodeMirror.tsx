@@ -5,7 +5,7 @@ import CodeMirror from '@uiw/react-codemirror'
 import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
 import { useTagEditor } from '../useTagEditor'
-import { useDebouncedState } from '@mantine/hooks'
+import { useClipboard, useDebouncedState } from '@mantine/hooks'
 import { simpleTagsToCode } from '@/utils/old-parser-from-angular'
 const useBlockCodeMirror = () => {
   const { dispatch, myActions, myState, currTagList } = useTagEditor()
@@ -46,6 +46,7 @@ const CodePanel: FC = () => {
   return <CodeMirror value={debCode} placeholder={defaultText} maxHeight={maxHeight} onChange={setDebCode} theme={dracula} />
 }
 const ControlPanel: FC = () => {
+  const clipboard = useClipboard({ timeout: 500 })
   const { setState, code, submitCode, currTagList } = useBlockCodeMirror()
   const handleSplitClick = () => {
     const nextCode = simpleTagsToCode(currTagList, 'split')
@@ -62,17 +63,23 @@ const ControlPanel: FC = () => {
   const handleRefreshClick = () => {
     submitCode()
   }
+  const handleCopyCodeClick = () => {
+    clipboard.copy(code)
+  }
   return (
     <Paper radius='xl' p='sm'>
       <Group>
-        <Button variant='filled' w='6rem' radius='xl' color='gray' onClick={handleSplitClick}>
+        <Button variant='filled' w='7rem' radius='xl' color='gray' onClick={handleSplitClick}>
           Split
         </Button>
-        <Button variant='filled' w='6rem' radius='xl' color='gray' onClick={handleTrimClick}>
+        <Button variant='filled' w='7rem' radius='xl' color='gray' onClick={handleTrimClick}>
           Trim
         </Button>
-        <Button variant='filled' w='6rem' radius='xl' color='gray' onClick={handleUnderScoreClick}>
-          ToUL
+        <Button variant='filled' w='7rem' radius='xl' color='gray' onClick={handleUnderScoreClick}>
+          UnderLine
+        </Button>
+        <Button variant='filled' w='7rem' radius='xl' color='gray' onClick={handleCopyCodeClick}>
+          CopyCode
         </Button>
         <Button ml='auto' variant='filled' w='6rem' radius='xl' color='yellow' onClick={handleRefreshClick}>
           Refresh

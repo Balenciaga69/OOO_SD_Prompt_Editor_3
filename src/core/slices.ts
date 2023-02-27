@@ -10,6 +10,7 @@ export const tagSlice = createSlice({
     removeMany: TagAdapter.removeMany,
     updateOne: TagAdapter.updateOne,
     addMany: TagAdapter.addMany,
+    setAll: TagAdapter.setAll,
   },
 })
 const TagBlockAdapter = createEntityAdapter<TagBlock>()
@@ -20,5 +21,6 @@ export const tagBlockSlice = createSlice({
     addOne: TagBlockAdapter.addOne,
     removeOne: TagBlockAdapter.removeOne,
     updateOne: TagBlockAdapter.updateOne,
+    setAll: TagBlockAdapter.setAll,
   },
 })

@@ -29,6 +29,10 @@ export class RD {
   static FUNCS = {
     CODE_SYNTAX_CHECK: codeSyntaxCheckFuncs,
   } as const
+  static LOCAL_STORAGE_KEY = {
+    REDUX: 'REDUX',
+  } as const
+
   static IMG = {
     GITHUB_BLACK: new URL('../assets/image/github-black.svg', import.meta.url).href,
     GITHUB_WHITE: new URL('../assets/image/github-white.svg', import.meta.url).href,

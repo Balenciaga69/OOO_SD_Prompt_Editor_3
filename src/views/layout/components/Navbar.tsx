@@ -1,75 +1,87 @@
-import { RD } from '@/core'
+import { RD, useMyLocal } from '@/core'
 import { SFIcon } from '@/views/shared/SFIcon'
+import { SToolTip } from '@/views/shared/SToolTip'
 import { ActionIcon, Box, Center, Flex, Navbar as MNavBar } from '@mantine/core'
 import React, { FC, ReactNode } from 'react'
+import { useStore } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 interface IconItemProps {
   to?: string
   children: ReactNode
+  label?: string
+  onclick?: () => void
 }
 export const NavBar: FC = () => {
+  const { load, save } = useMyLocal()
+
   const { W } = RD.STYLE.NAV_BAR
 
-  const { TAG_VISUAL, TAG_EDITOR, INTRO } = RD.PAGE_LINK
+  const { TAG_VISUAL, TAG_EDITOR } = RD.PAGE_LINK
 
   const { GITHUB_WHITE } = RD.IMG
 
   const { GITHUB_URL } = RD.AUTHOR
 
-  const IconBox: FC = () => (
+  const TopBox: FC = () => (
     <Box className='text-center'>
-      <IconWrapper to={INTRO}>
-        <SFIcon icon='faInfo' />
-      </IconWrapper>
-      <IconWrapper>
+      <IconWrapper label='Mixing'>
         <SFIcon icon='faTag' />
       </IconWrapper>
-      <IconWrapper to={TAG_VISUAL}>
+      <IconWrapper label='Sorting' to={TAG_VISUAL}>
         <SFIcon icon='faChartSimple' />
       </IconWrapper>
-      <IconWrapper to={TAG_EDITOR}>
+      <IconWrapper label='Typing' to={TAG_EDITOR}>
         <SFIcon icon='faCode' />
       </IconWrapper>
-      <IconWrapper>
+      <IconWrapper label='Setting'>
         <SFIcon icon='faGear' />
       </IconWrapper>
     </Box>
   )
-
-  const GithubBox: FC = () => (
+  const BottomBox: FC = () => (
     <Box mt='auto'>
-      <IconWrapper to={GITHUB_URL}>
+      <Box mb='xl'>
+        <IconWrapper label='Save localStorage' onclick={save}>
+          <SFIcon icon='faFileExport' />
+        </IconWrapper>
+        <IconWrapper label='Load LocalStorage' onclick={load}>
+          <SFIcon icon='faFileImport' />
+        </IconWrapper>
+      </Box>
+      <IconWrapper label='Repository' to={GITHUB_URL}>
         <img width='100%' src={GITHUB_WHITE} alt='github-icon' />
       </IconWrapper>
     </Box>
   )
   return (
-    <MNavBar width={{ base: W }} height='100%' py='md' px='md'>
+    <MNavBar width={{ base: W }} height='100%' py='md' px='md' zIndex={200}>
       <Flex direction='column' gap='md'>
-        <IconBox />
+        <TopBox />
       </Flex>
-      <GithubBox />
+      <BottomBox />
     </MNavBar>
   )
 }
 
-const IconWrapper: FC<IconItemProps> = ({ to, children }) => {
-  const LinkWrapper: FC<IconItemProps> = ({ to, children }) => {
-    return (
-      <>
-        {to && <Link to={to}>{children}</Link>}
-        {!to && children}
-      </>
-    )
-  }
+const IconWrapper: FC<IconItemProps> = ({ to, children, label = '', onclick }) => {
   return (
-    <Center mt='lg'>
-      <LinkWrapper to={to}>
-        <ActionIcon size='lg' variant='transparent'>
-          {children}
-        </ActionIcon>
-      </LinkWrapper>
-    </Center>
+    <SToolTip label={label}>
+      <Center mt='lg'>
+        <LinkWrapper to={to}>
+          <ActionIcon size='lg' variant='transparent' onClick={onclick}>
+            {children}
+          </ActionIcon>
+        </LinkWrapper>
+      </Center>
+    </SToolTip>
+  )
+}
+const LinkWrapper: FC<IconItemProps> = ({ to, children }) => {
+  return (
+    <>
+      {to && <Link to={to}>{children}</Link>}
+      {!to && children}
+    </>
   )
 }
