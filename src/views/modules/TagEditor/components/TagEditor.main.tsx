@@ -8,10 +8,10 @@ import { BlockCodeMirror } from './BlockCodeMirror'
 import { BlockTagVisual } from './BlockTagVisual'
 const useHook = () => {
   const { dispatch, myActions } = useTagEditor()
-  const { initMain } = myActions
-  const actionCreators = bindActionCreators({ initMain }, dispatch)
+  const { initTagEditor } = myActions
+  const actionCreators = bindActionCreators({ initTagEditor }, dispatch)
   useEffect(() => {
-    actionCreators.initMain()
+    actionCreators.initTagEditor()
   }, [])
 }
 export const TagEditor: FC = () => {

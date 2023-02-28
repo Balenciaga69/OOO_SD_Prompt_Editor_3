@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom'
 export const HorizontalLogo: FC = () => {
   const { WIDE_LOGO } = RD.IMG
 
-  const { INTRO } = RD.PAGE_LINK
+  const { TAG_VISUAL } = RD.PAGE_LINK
 
   const { UPDATE_VERSION } = RD.AUTHOR
   return (
-    <Link to={INTRO}>
+    <Link to={TAG_VISUAL}>
       <Box className='pointer'>
         <Box className='text-center'>
           <img src={WIDE_LOGO} alt='logo' width={100} />

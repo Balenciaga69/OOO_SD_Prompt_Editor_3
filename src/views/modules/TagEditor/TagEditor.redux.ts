@@ -17,7 +17,7 @@ export const tagEditorSlice = createSlice({
     setState(state, { payload }: PayloadAction<Partial<TagEditorState>>) {
       return { ...state, ...payload }
     },
-    initMain() {
+    initTagEditor() {
       undefined
     },
     submitCode() {
@@ -27,11 +27,10 @@ export const tagEditorSlice = createSlice({
 })
 const { actions } = tagEditorSlice
 export function* tagEditorSaga(): SagaIterator {
-  yield takeEvery(actions.initMain.type, initMain)
+  yield takeEvery(actions.initTagEditor.type, initTagEditor)
   yield takeEvery(actions.submitCode.type, submitCode)
 }
-function* initMain(): SagaIterator {
-  console.info(' watchThis  tagEditorSaga initMain')
+function* initTagEditor(): SagaIterator {
   const myState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
   if (_.isEmpty(myState.blockID)) {
     const newID = nanoid()

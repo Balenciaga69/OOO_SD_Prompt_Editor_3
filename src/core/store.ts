@@ -1,13 +1,13 @@
 import { RD } from '@/core'
 import { Tag, TagBlock } from '@/interfaces/core.interface'
 import { tagEditorSaga, tagEditorSlice } from '@/views/modules/TagEditor'
-import { Action, PayloadAction, combineReducers, configureStore } from '@reduxjs/toolkit'
+import { PayloadAction, combineReducers, configureStore } from '@reduxjs/toolkit'
 import _ from 'lodash'
+import { useCallback } from 'react'
+import { useDispatch, useStore } from 'react-redux'
 import createSagaMiddleware, { SagaIterator } from 'redux-saga'
 import { call, put, select, takeEvery } from 'redux-saga/effects'
 import { tagBlockSlice, tagSlice } from './slices'
-import { useDispatch, useStore } from 'react-redux'
-import { useCallback, useEffect } from 'react'
 
 const shared = combineReducers({ tag: tagSlice.reducer, tagBlock: tagBlockSlice.reducer })
 const modules = combineReducers({ tagEditor: tagEditorSlice.reducer })

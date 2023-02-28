@@ -6,7 +6,7 @@ import { codeSyntaxCheckFuncs } from '@/utils/codeCheck'
 export class RD {
   static AUTHOR = {
     WEB_NAME: '咒語助手 v1.0',
-    GITHUB_URL: 'https://github.com/emilioCodigo/GK-01-ProperSwitch',
+    GITHUB_URL: 'https://github.com/emilioCodigo',
     UPDATE_VERSION: '2023/02/28',
     AUTHOR_NAME: 'Emilio Gonzales',
     FACEBOOK: 'https://www.facebook.com/profile.php?id=100012966612095',
