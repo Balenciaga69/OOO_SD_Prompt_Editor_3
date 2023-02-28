@@ -1,13 +1,13 @@
+import { TagAtom } from '@/interfaces/core.interface'
+import { tagAtomSlice } from '@/redux'
 import { SFIcon } from '@/views/shared/SFIcon'
 import { useSortable } from '@dnd-kit/sortable'
 import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box, Card, Flex, Group, HoverCard, Table, Text } from '@mantine/core'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import React, { FC, ReactNode, useCallback, useMemo } from 'react'
+import React, { FC, ReactNode, useCallback } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
-import { TagAtom } from '@/interfaces/core.interface'
-import { tagAtomSlice } from '@/redux'
 interface TagCardProps {
   tagAtom: TagAtom
 }
@@ -33,8 +33,6 @@ export const TagCard: FC<TagCardProps> = ({ tagAtom }) => {
 export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
   const { removeOne } = useTagCard()
   const { attributes, listeners } = useSortable({ id: tagAtom.id })
-  // FIXME: by CaiChengYou
-  const processedTitle = useMemo(() => _.truncate(tagAtom.title, { omission: '...', length: 16 }), [tagAtom])
   const handleXIconClick = useCallback(() => {
     removeOne(tagAtom.id)
   }, [tagAtom, removeOne])
@@ -45,11 +43,13 @@ export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
       </td>
       <td>
         <Flex>
-          <WithNameHoverCard name={tagAtom.title} handleXIconClick={handleXIconClick}>
-            <Text maw='8.5rem' className='overflow-hidden'>
-              {tagAtom.title}
-            </Text>
-          </WithNameHoverCard>
+          <Box>
+            <WithNameHoverCard name={tagAtom.title} handleXIconClick={handleXIconClick}>
+              <Text maw='120px' className='overflow-hidden text-nowrap'>
+                {tagAtom.title}
+              </Text>
+            </WithNameHoverCard>
+          </Box>
           <ActionIcon className='ms-auto' variant='transparent' size='xs' {...listeners} {...attributes}>
             <SFIcon icon='faGripVertical' />
           </ActionIcon>

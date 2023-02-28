@@ -55,7 +55,7 @@ const NamingSection: FC<CarouselItemProps> = (props) => {
   }, [props])
   return (
     <Card.Section inheritPadding>
-      <Input size='xl' fw='bolder' variant='unstyled' placeholder='My tag block name is...' maxLength={10} value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Input size='xl' fw='bolder' variant='unstyled' placeholder='My tag block name is...' maxLength={30} value={title} onChange={(e) => setTitle(e.target.value)} />
     </Card.Section>
   )
 }

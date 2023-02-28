@@ -1,34 +1,32 @@
 import { RD, useMyLocal } from '@/core'
+import { GroupMixer } from '@/views/modules/GroupMixer'
 import { SFIcon } from '@/views/shared/SFIcon'
 import { SToolTip } from '@/views/shared/SToolTip'
 import { ActionIcon, Box, Center, Flex, Navbar as MNavBar } from '@mantine/core'
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 interface IconItemProps {
   to?: string
   children: ReactNode
   label?: string
-  onclick?: () => void
+  onClick?: () => void
 }
 export const NavBar: FC = () => {
   const { load, save } = useMyLocal()
-
   const { W } = RD.STYLE.NAV_BAR
-
   const { TAG_VISUAL, TAG_EDITOR } = RD.PAGE_LINK
-
   const { GITHUB_WHITE } = RD.IMG
-
   const { GITHUB_URL } = RD.AUTHOR
-
+  const [openGroupMixer, setOpenGroupMixer] = useState(false)
   const TopBox: FC = () => (
     <>
+      <GroupMixer opened={openGroupMixer} onClose={() => setOpenGroupMixer(false)} />
       <Box h={50} />
       <Box className='text-center'>
-        {/* <IconWrapper label='Mixing'>
-        <SFIcon icon='faTag' />
-      </IconWrapper> */}
+        <IconWrapper label='Grouping' onClick={() => setOpenGroupMixer(true)}>
+          <SFIcon icon='faLayerGroup' />
+        </IconWrapper>
         <IconWrapper label='Sorting' to={TAG_VISUAL}>
           <SFIcon icon='faChartSimple' />
         </IconWrapper>
@@ -44,10 +42,10 @@ export const NavBar: FC = () => {
   const BottomBox: FC = () => (
     <Box mt='auto'>
       <Box mb='xl'>
-        <IconWrapper label='Save localStorage' onclick={save}>
+        <IconWrapper label='Save localStorage' onClick={save}>
           <SFIcon icon='faFileExport' />
         </IconWrapper>
-        <IconWrapper label='Load LocalStorage' onclick={load}>
+        <IconWrapper label='Load LocalStorage' onClick={load}>
           <SFIcon icon='faFileImport' />
         </IconWrapper>
       </Box>
@@ -66,12 +64,12 @@ export const NavBar: FC = () => {
   )
 }
 
-const IconWrapper: FC<IconItemProps> = ({ to, children, label = '', onclick }) => {
+const IconWrapper: FC<IconItemProps> = ({ to, children, label = '', onClick }) => {
   return (
     <SToolTip label={label}>
       <Center mt='lg'>
         <LinkWrapper to={to}>
-          <ActionIcon size='lg' variant='transparent' onClick={onclick}>
+          <ActionIcon size='lg' variant='transparent' onClick={onClick}>
             {children}
           </ActionIcon>
         </LinkWrapper>

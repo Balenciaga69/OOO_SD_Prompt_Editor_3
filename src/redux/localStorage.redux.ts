@@ -1,4 +1,5 @@
-import { TagAtom, TagEditorState, TagGroup } from '@/interfaces/core.interface'
+import { groupMixerSlice } from './../views/modules/GroupMixer/GroupMixer.redux'
+import { TagAtom, TagGroup } from '@/interfaces/core.interface'
 import { tagEditorSlice } from '@/views/modules/TagEditor'
 import { PayloadAction, createAction } from '@reduxjs/toolkit'
 import _ from 'lodash'
@@ -14,10 +15,11 @@ export function* localStorageSaga(): SagaIterator {
 function* initStateFromLocal({ payload }: PayloadAction<{ state: RootState }>): SagaIterator {
   const { state } = payload
   const { modules, shared } = state
-  const { tagEditor } = modules
+  const { tagEditor, groupMixer } = modules
   const { tagAtom, tagGroup } = shared
   yield put(tagAtomSlice.actions.setAll(_.values(tagAtom.entities) as TagAtom[]))
   yield put(tagGroupSlice.actions.setAll(_.values(tagGroup.entities) as TagGroup[]))
   yield put(tagEditorSlice.actions.setState(tagEditor))
+  yield put(groupMixerSlice.actions.setState(groupMixer))
 }
 export const initStateFromLocalAction = createAction<{ state: RootState }>('INIT_STATE_FROM_LOCAL')

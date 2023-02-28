@@ -27,9 +27,9 @@ export function* tagEditorSaga(): SagaIterator {
 function* initTagEditor(): SagaIterator {
   const thisState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
   if (!thisState.group) {
-    const newGroup: TagGroup = { id: nanoid(), tagIDs: [], title: '' }
+    const newGroup: TagGroup = { id: nanoid(), tagIDs: [], title: 'my First Tag Group' }
     yield put(tagGroupSlice.actions.addOne(newGroup))
-    // yield put(tagEditorSlice.actions.setState({ group: newGroup, atomList: [], inputText: '' }))
+    yield put(tagEditorSlice.actions.setState({ group: newGroup, atomList: [], inputText: '' }))
   }
 }
 function* submitCode(): SagaIterator {
@@ -37,17 +37,17 @@ function* submitCode(): SagaIterator {
   const thisState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
   const thisGroup = thisState.group
   if (!thisGroup) return
-  const { tagIDs } = thisGroup
+  const { tagIDs: oldIDs } = thisGroup
   const { inputText } = thisState
   const edgeResult = getInputEdgeError(inputText)
   const pairResult = getInputPairError(inputText)
   if (edgeResult && pairResult) return
   const tagListWithoutID: Omit<TagAtom, 'id'>[] = simpleTagParserFromAngular(inputText)
-  const IDs = _.times(tagListWithoutID.length, () => nanoid())
-  const tagList = _.map(tagListWithoutID, (tag, index) => ({ ...tag, id: IDs[index] }))
-  if (!_.isEmpty(tagList)) {
-    yield put(tagAtomSlice.actions.addMany(tagList))
+  const newIDs = _.times(tagListWithoutID.length, () => nanoid())
+  const atomList = _.map(tagListWithoutID, (tag, index) => ({ ...tag, id: newIDs[index] }))
+  if (!_.isEmpty(atomList)) {
+    yield put(tagAtomSlice.actions.addMany(atomList))
   }
-  yield put(tagAtomSlice.actions.removeMany(tagIDs))
-  yield put(tagGroupSlice.actions.updateOne({ changes: { tagIDs: IDs }, id: thisGroup.id }))
+  yield put(tagAtomSlice.actions.removeMany(oldIDs))
+  yield put(tagGroupSlice.actions.updateOne({ changes: { tagIDs: newIDs }, id: thisGroup.id }))
 }

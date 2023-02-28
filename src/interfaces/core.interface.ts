@@ -14,3 +14,12 @@ export interface TagEditorState {
   group: TagGroup | null
   atomList: TagAtom[]
 }
+
+export interface MixerItem {
+  id: string
+  groupID: string
+  weight: number
+}
+export interface GroupMixerState {
+  itemList: MixerItem[]
+}

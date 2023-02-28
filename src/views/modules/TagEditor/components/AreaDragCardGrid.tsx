@@ -1,12 +1,12 @@
 import { TagGroup } from '@/interfaces/core.interface'
 import { tagAtomSlice, tagGroupSlice } from '@/redux'
+import { SSortableItemWrapper } from '@/views/shared/SSortableItemWrapper'
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core'
-import { SortableContext, arrayMove, rectSortingStrategy, useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable'
 import { SimpleGrid } from '@mantine/core'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import React, { FC, ReactElement, ReactNode, useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
 import { TagCard } from './TagCard'
 
@@ -49,29 +49,12 @@ export const AreaDragCardGrid: FC<Props> = (props) => {
           ]}
         >
           {_.map(areaAtomList, (tag) => (
-            <SortableItemWrapper key={tag.id} id={tag.id}>
+            <SSortableItemWrapper key={tag.id} id={tag.id}>
               <TagCard tagAtom={tag} />
-            </SortableItemWrapper>
+            </SSortableItemWrapper>
           ))}
         </SimpleGrid>
       </SortableContext>
     </DndContext>
-  )
-}
-interface SortableItemWrapperProps {
-  children: ReactNode
-  id: string
-}
-export function SortableItemWrapper({ id, children }: SortableItemWrapperProps): ReactElement {
-  const { setNodeRef, transform, transition, isDragging } = useSortable({ id })
-  const className = isDragging ? 'dragging' : ''
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
-  return (
-    <div className={className} ref={setNodeRef} style={style}>
-      {children}
-    </div>
   )
 }

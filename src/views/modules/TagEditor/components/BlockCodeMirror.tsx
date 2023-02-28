@@ -32,22 +32,22 @@ const CodePanel: FC = () => {
   /**
    * fix update input freq issue
    */
-  useEffect(() => {
-    setState({ inputText: debText })
-  }, [debText])
-  useEffect(() => {
-    setDebText(inputText)
-  }, [inputText])
+  // useEffect(() => {
+  //   setState({ inputText: debText })
+  // }, [debText])
+  // useEffect(() => {
+  //   setDebText(inputText)
+  // }, [inputText])
   /**
    * auto input atom list to code
    */
   useEffect(() => {
     const nextText = simpleTagsToCode(atomList, 'split')
-    setDebText(nextText)
+    setState({ inputText: nextText })
   }, [atomList])
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
-  return <CodeMirror value={debText} placeholder={defaultText} maxHeight={maxHeight} onChange={setDebText} theme={dracula} />
+  return <CodeMirror value={inputText} placeholder={defaultText} maxHeight={maxHeight} onChange={(text) => setState({ inputText: text })} theme={dracula} />
 }
 const ControlPanel: FC = () => {
   const clipboard = useClipboard({ timeout: 500 })

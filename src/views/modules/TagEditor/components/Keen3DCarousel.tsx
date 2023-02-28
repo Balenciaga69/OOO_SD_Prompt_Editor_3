@@ -25,7 +25,7 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
   slider.on('detailsChanged', detailsChanged)
   function detailsChanged(): void {
     const slideCount = slider.slides.length
-    const z = slideCount * 300
+    const z = slideCount * 320
     const containerDeg = 360 * slider.track.details.progress
     const slideDeg = 360 / slideCount
     slider.container.style.transform = `translateZ(-${z}px) rotateY(${-containerDeg}deg)`
