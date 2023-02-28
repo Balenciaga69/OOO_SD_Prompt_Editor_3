@@ -1,25 +1,16 @@
-import { EntityState } from '@reduxjs/toolkit'
-export interface TagEditorState {
-  code: string
-  blockID: string
-}
-export interface AppState {
-  shared: {
-    tag: EntityState<Tag>
-    tagBlock: EntityState<TagBlock>
-  }
-  modules: {
-    tagEditor: TagEditorState
-  }
-}
-export interface Tag {
+export interface TagAtom {
   id: string
   title: string
   bracketWeight: number
   numberWeight: number
 }
-export interface TagBlock {
+export interface TagGroup {
   id: string
   title: string
   tagIDs: string[]
+}
+export interface TagEditorState {
+  inputText: string
+  group: TagGroup | null
+  atomList: TagAtom[]
 }

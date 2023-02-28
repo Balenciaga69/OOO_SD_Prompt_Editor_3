@@ -4,16 +4,14 @@ import { dracula } from '@uiw/codemirror-theme-dracula'
 import CodeMirror from '@uiw/react-codemirror'
 import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
-import { useTagEditor } from '../useTagEditor'
+import { useTagEditor } from '../TagEditor.hook'
 import { useClipboard, useDebouncedState } from '@mantine/hooks'
 import { simpleTagsToCode } from '@/utils/old-parser-from-angular'
 const useBlockCodeMirror = () => {
-  const { dispatch, myActions, myState, currTagList } = useTagEditor()
-  const { blockID, code } = myState
-  const { setState, submitCode } = myActions
+  const { dispatch, thisActions, thisState } = useTagEditor()
+  const { setState, submitCode } = thisActions
   const actionCreators = bindActionCreators({ setState, submitCode }, dispatch)
-
-  return { blockID, currTagList, code, ...actionCreators }
+  return { thisState, ...actionCreators }
 }
 export const BlockCodeMirror: FC = () => {
   return (
@@ -28,43 +26,50 @@ export const BlockCodeMirror: FC = () => {
   )
 }
 const CodePanel: FC = () => {
-  const { setState, code, currTagList } = useBlockCodeMirror()
-  const [debCode, setDebCode] = useDebouncedState(code, 200)
+  const { setState, thisState } = useBlockCodeMirror()
+  const { atomList, inputText } = thisState
+  const [debText, setDebText] = useDebouncedState(inputText, 200)
+  /**
+   * fix update input freq issue
+   */
   useEffect(() => {
-    setState({ code: debCode })
-  }, [debCode])
+    setState({ inputText: debText })
+  }, [debText])
   useEffect(() => {
-    setDebCode(code)
-  }, [code])
+    setDebText(inputText)
+  }, [inputText])
+  /**
+   * auto input atom list to code
+   */
   useEffect(() => {
-    // when block changed , update code state
-    const nextCode = simpleTagsToCode(currTagList, 'split')
-    setDebCode(nextCode)
-  }, [currTagList])
+    const nextText = simpleTagsToCode(atomList, 'split')
+    setDebText(nextText)
+  }, [atomList])
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
-  return <CodeMirror value={debCode} placeholder={defaultText} maxHeight={maxHeight} onChange={setDebCode} theme={dracula} />
+  return <CodeMirror value={debText} placeholder={defaultText} maxHeight={maxHeight} onChange={setDebText} theme={dracula} />
 }
 const ControlPanel: FC = () => {
   const clipboard = useClipboard({ timeout: 500 })
-  const { setState, code, submitCode, currTagList } = useBlockCodeMirror()
+  const { setState, submitCode, thisState } = useBlockCodeMirror()
+  const { atomList, inputText } = thisState
   const handleSplitClick = () => {
-    const nextCode = simpleTagsToCode(currTagList, 'split')
-    setState({ code: nextCode })
+    const nextText = simpleTagsToCode(atomList, 'split')
+    setState({ inputText: nextText })
   }
   const handleUnderScoreClick = () => {
-    const nextCode = _.replace(code, /[^\S\n]/g, '_')
-    setState({ code: nextCode })
+    const nextText = _.replace(inputText, /[^\S\n]/g, '_')
+    setState({ inputText: nextText })
   }
   const handleTrimClick = () => {
-    const nextCode = simpleTagsToCode(currTagList, 'zip')
-    setState({ code: nextCode })
+    const nextText = simpleTagsToCode(atomList, 'zip')
+    setState({ inputText: nextText })
   }
   const handleRefreshClick = () => {
     submitCode()
   }
   const handleCopyCodeClick = () => {
-    clipboard.copy(code)
+    clipboard.copy(inputText)
   }
   return (
     <Paper radius='xl' p='sm'>

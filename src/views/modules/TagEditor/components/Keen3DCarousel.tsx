@@ -4,13 +4,12 @@ import { ActionIcon, Box } from '@mantine/core'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import { KeenSliderPlugin, useKeenSlider } from 'keen-slider/react'
 import _ from 'lodash'
-import React, { FC, useCallback, useEffect, useState } from 'react'
-import { useTagEditor } from '../useTagEditor'
+import React, { FC, useEffect, useState } from 'react'
+import { useTagEditor } from '../TagEditor.hook'
 import { CarouselItem } from './CarouselItem'
 
 const MutationPlugin: KeenSliderPlugin = (slider) => {
   const config = { childList: true }
-
   const observer = new MutationObserver(function (mutations) {
     _.forEach(mutations, () => slider.update())
   })
@@ -26,11 +25,8 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
   slider.on('detailsChanged', detailsChanged)
   function detailsChanged(): void {
     const slideCount = slider.slides.length
-
     const z = slideCount * 300
-
     const containerDeg = 360 * slider.track.details.progress
-
     const slideDeg = 360 / slideCount
     slider.container.style.transform = `translateZ(-${z}px) rotateY(${-containerDeg}deg)`
     _.forEach(slider.slides, (slide, i) => {
@@ -41,14 +37,14 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
 }
 
 const useKeen3DCarousel = () => {
-  const { allTagBlock, myActions, dispatch, myState } = useTagEditor()
-  const { setState } = myActions
+  const { thisActions, dispatch, thisState, allGroupList } = useTagEditor()
+  const { setState } = thisActions
   const actionCreators = bindActionCreators({ setState }, dispatch)
-  return { allTagBlock, ...actionCreators, myState }
+  return { allGroupList, ...actionCreators, thisState }
 }
 
 export const Keen3DCarousel: FC = () => {
-  const { allTagBlock, setState } = useKeen3DCarousel()
+  const { allGroupList, setState, thisState } = useKeen3DCarousel()
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -67,20 +63,32 @@ export const Keen3DCarousel: FC = () => {
     dir === 'left' ? instanceRef.current?.prev() : instanceRef.current?.next()
   }
   const [rel, setRel] = useState(0)
+  /**
+   * fix delete carousel item bug
+   */
   useEffect(() => {
-    if (allTagBlock[rel]) {
-      const blockID = allTagBlock[rel].id
-      setState({ blockID })
+    if (_.isNil(allGroupList[rel])) return
+    const group = allGroupList[rel]
+    setState({ group })
+  }, [allGroupList.length, rel])
+  /**
+   * fix load file bug
+   */
+  useEffect(() => {
+    if (!allGroupList[rel] || !thisState.group) return
+    if (thisState.group.id !== allGroupList[rel].id) {
+      const group = allGroupList[rel]
+      setState({ group })
     }
-  }, [allTagBlock, rel])
+  }, [thisState, allGroupList])
   return (
     <Box className='wrapper Keen3DCarousel'>
       <Box className='scene'>
-        {allTagBlock.length > 1 && <IconBoxes changeSlide={changeSlide} />}
+        {allGroupList.length > 1 && <IconBoxes changeSlide={changeSlide} />}
         <div className='keen-slider' ref={sliderRef}>
-          {_.map(allTagBlock, (tagBlock, i) => (
+          {_.map(allGroupList, (group, i) => (
             <div key={i} className='carousel__cell'>
-              <CarouselItem tagBlock={tagBlock} />
+              <CarouselItem tagGroup={group} />
             </div>
           ))}
         </div>

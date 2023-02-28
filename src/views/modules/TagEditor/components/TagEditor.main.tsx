@@ -1,17 +1,15 @@
 import { Box } from '@mantine/core'
-import { bindActionCreators } from '@reduxjs/toolkit'
 import React, { FC, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useTagEditor } from '../TagEditor.hook'
 import '../TagEditor.scss'
-import { useTagEditor } from '../useTagEditor'
 import { BlockCodeMirror } from './BlockCodeMirror'
 import { BlockTagVisual } from './BlockTagVisual'
 const useHook = () => {
-  const { dispatch, myActions } = useTagEditor()
-  const { initTagEditor } = myActions
-  const actionCreators = bindActionCreators({ initTagEditor }, dispatch)
+  const { dispatch, thisActions } = useTagEditor()
+  const { initTagEditor } = thisActions
   useEffect(() => {
-    actionCreators.initTagEditor()
+    dispatch(initTagEditor())
   }, [])
 }
 export const TagEditor: FC = () => {

@@ -1,5 +1,3 @@
-import { codeSyntaxCheckFuncs } from '@/utils/codeCheck'
-
 /**
  * @description ResourceData
  */
@@ -30,9 +28,6 @@ export class RD {
       H: 120,
     },
   }
-  static FUNCS = {
-    CODE_SYNTAX_CHECK: codeSyntaxCheckFuncs,
-  } as const
   static LOCAL_STORAGE_KEY = {
     REDUX: 'REDUX',
   } as const

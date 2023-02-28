@@ -1,9 +1,5 @@
+import { InputError } from '@/interfaces/inputError.interface'
 import _ from 'lodash'
-interface CodeError {
-  i: number
-  expected: string
-  char: string
-}
 const aBracket = ['(', '[', '{'] as const
 const bBracket = [')', ']', '}'] as const
 type Bracket = (typeof aBracket)[number]
@@ -12,7 +8,7 @@ const pair: Record<string, string> = {
   '[': ']',
   '{': '}',
 }
-function getCodePairError(text: string): CodeError | null {
+function getInputPairError(text: string): InputError | null {
   const stack: Bracket[] = []
   for (let i = 0; i < text.length; i++) {
     const char = text[i]
@@ -33,9 +29,9 @@ function getCodePairError(text: string): CodeError | null {
   }
   return null
 }
-function getCodeEdgeError(text: string): Omit<CodeError, 'expected'> | null {
+function getInputEdgeError(text: string): Omit<InputError, 'expected'> | null {
   const REGEX = /[^,，\\([{\s:|]\s*[([{]|[^\\][\])}]\s*[^,，)\]}\s:|]/
   const result = text.match(REGEX)
   return result ? { i: _.toNumber(result.index), char: result[0] } : null
 }
-export const codeSyntaxCheckFuncs = { getCodePairError, getCodeEdgeError }
+export const codeSyntaxCheckFuncs = { getInputPairError, getInputEdgeError }

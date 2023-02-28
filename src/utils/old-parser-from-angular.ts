@@ -1,5 +1,7 @@
-import { Tag } from '@/interfaces/core.interface'
+import { TagAtom } from '@/interfaces/core.interface'
 import _ from 'lodash'
+
+type Bracket = ')' | ']'
 const formatString = (code: string) => {
   let isReplaceFinished = false
   let result = code
@@ -28,10 +30,9 @@ const formatString = (code: string) => {
   }
   return result
 }
-type Bracket = ')' | ']'
-export const simpleTagParserFromAngular = (input: string): Omit<Tag, 'id'>[] => {
+export const simpleTagParserFromAngular = (input: string): Omit<TagAtom, 'id'>[] => {
   const code = formatString(input)
-  const tempList: Omit<Tag, 'id'>[] = []
+  const tempList: Omit<TagAtom, 'id'>[] = []
   let endPos = -1
   let stack: Bracket[] = []
   for (let i = code.length - 1; i > -1; i--) {
@@ -106,10 +107,9 @@ const generateTag = _.flow([
     const title = code.substring(start, end + 1)
     return { bracketWeight, numberWeight, title }
   },
-  ({ bracketWeight, numberWeight, title }) => ({ bracketWeight, numberWeight, title } as Omit<Tag, 'id'>),
+  ({ bracketWeight, numberWeight, title }) => ({ bracketWeight, numberWeight, title } as Omit<TagAtom, 'id'>),
 ])
-
-export const simpleTagsToCode = (tags: Tag[], mode: 'split' | 'zip' = 'zip') => {
+export const simpleTagsToCode = (tags: TagAtom[], mode: 'split' | 'zip' = 'zip') => {
   let finalResult = ''
   _.forEach(tags, (e, i) => {
     let tagStr = _.trim(e.title)

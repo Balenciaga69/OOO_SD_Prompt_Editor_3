@@ -3,7 +3,6 @@ import { SFIcon } from '@/views/shared/SFIcon'
 import { SToolTip } from '@/views/shared/SToolTip'
 import { ActionIcon, Box, Center, Flex, Navbar as MNavBar } from '@mantine/core'
 import React, { FC, ReactNode } from 'react'
-import { useStore } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 interface IconItemProps {
