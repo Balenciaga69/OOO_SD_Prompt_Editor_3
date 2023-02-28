@@ -16,7 +16,7 @@ export const useTagEditor = () => {
       const nextAtomList = _.compact(_.map(thisState.group?.tagIDs, (id) => tagAtomEntities[id]))
       dispatch(thisActions.setState({ atomList: nextAtomList }))
     }
-  }, [tagAtomEntities, thisState.group])
+  }, [tagAtomEntities, thisState.group?.tagIDs])
   useEffect(() => {
     if (thisState.group) {
       const nextGroup = tagGroupEntities[thisState.group.id]
