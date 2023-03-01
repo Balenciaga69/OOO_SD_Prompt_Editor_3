@@ -3,7 +3,7 @@ import { AppShell, Box } from '@mantine/core'
 import React, { FC, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Footer } from './Footer'
-import { NavBar } from './NavBar'
+import { Navbar } from './Navbar'
 
 interface Main {
   main: { backgroundColor: string }
@@ -22,7 +22,7 @@ export const Layout: FC = () => {
         padding={0}
         hidden={false}
         layout='alt'
-        navbar={<NavBar />}
+        navbar={<Navbar />}
         footer={<Footer />}
         styles={(theme): Main => ({
           main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },

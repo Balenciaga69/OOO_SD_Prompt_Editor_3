@@ -12,7 +12,7 @@ interface IconItemProps {
   label?: string
   onClick?: () => void
 }
-export const NavBar: FC = () => {
+export const Navbar: FC = () => {
   const { load, save } = useMyLocal()
   const { W } = RD.STYLE.NAV_BAR
   const { TAG_VISUAL, TAG_EDITOR } = RD.PAGE_LINK
