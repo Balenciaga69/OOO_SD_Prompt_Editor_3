@@ -1,19 +1,11 @@
+import { MixerItem } from '@/interfaces/core.interface'
 import { SFIcon } from '@/views/shared/SFIcon'
 import { useSortable } from '@dnd-kit/sortable'
-import { ActionIcon, Box, Card, Flex, NativeSelect, SegmentedControl, Slider, Text } from '@mantine/core'
-import React, { FC, useEffect } from 'react'
-import { useGroupMixer } from '../GroupMixer.hook'
-import _ from 'lodash'
-import { MixerItem } from '@/interfaces/core.interface'
+import { ActionIcon, Box, Card, Flex, NativeSelect, SegmentedControl, Text } from '@mantine/core'
 import { bindActionCreators } from '@reduxjs/toolkit'
-const MARKS = [
-  { value: 0, label: 'No' },
-  { value: 1, label: '( )' },
-  { value: 2, label: '(( ))' },
-  { value: 3, label: '((( )))' },
-  { value: 4, label: '(((( ))))' },
-  { value: 5, label: '(((( ))))' },
-]
+import _ from 'lodash'
+import React, { FC } from 'react'
+import { useGroupMixer } from '../GroupMixer.hook'
 interface Props {
   group: MixerItem
 }
@@ -29,15 +21,16 @@ export const SortCard: FC<Props> = (props) => {
   const { group } = props
   const { attributes, listeners } = useSortable({ id: group.id })
   const handleSelectChange = (value: string) => {
-    const nextGroup: MixerItem = { ...group, groupID: value }
-    const id = _.toNumber(group.id)
-    const newList = _.map(thisState.itemList, (group, i) => (i === id ? nextGroup : group))
-    setState({ itemList: newList })
+    const nextItem: MixerItem = { ...group, groupID: value }
+    setNewItemList(nextItem)
   }
-  const handleSliderChange = (value: number) => {
-    const nextGroup: MixerItem = { ...group, weight: value }
-    const id = _.toNumber(group.id)
-    const newList = _.map(thisState.itemList, (group, i) => (i === id ? nextGroup : group))
+  const handleSliderChange = (value: string) => {
+    const nextItem: MixerItem = { ...group, weight: _.toNumber(value) }
+    setNewItemList(nextItem)
+  }
+  const setNewItemList = (nextItem: MixerItem) => {
+    const id = _.toString(group.id)
+    const newList = _.map(thisState.itemList, (group) => (group.id === id ? nextItem : group))
     setState({ itemList: newList })
   }
   return (
@@ -59,7 +52,7 @@ export const SortCard: FC<Props> = (props) => {
           <SegmentedControl
             color='yellow'
             value={_.toString(group.weight)}
-            onChange={(e) => handleSliderChange(_.toNumber(e))}
+            onChange={(e) => handleSliderChange(e)}
             data={[
               { label: 'Normal', value: '0' },
               { label: 'Single', value: '1' },
