@@ -9,8 +9,8 @@ const useHook = () => {
   const { dispatch, thisActions } = useTagEditor()
   const { initTagEditor } = thisActions
   useEffect(() => {
-    dispatch(initTagEditor())
-  }, [])
+    initTagEditor()
+  }, [dispatch, initTagEditor])
 }
 export const TagEditor: FC = () => {
   useHook()
@@ -18,12 +18,14 @@ export const TagEditor: FC = () => {
   const codeRef = useRef<HTMLDivElement>(null)
   const visualRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (!codeRef.current || !visualRef.current) return
+    const { current: codeElement } = codeRef
+    const { current: visualElement } = visualRef
+    if (!codeElement || !visualElement) return
     if (location.hash === '#editor') {
-      codeRef.current.scrollIntoView({ behavior: 'smooth' })
+      codeElement.scrollIntoView({ behavior: 'smooth' })
     }
     if (location.hash === '#visual') {
-      visualRef.current.scrollIntoView({ behavior: 'smooth' })
+      visualElement.scrollIntoView({ behavior: 'smooth' })
     }
   }, [location])
   return (

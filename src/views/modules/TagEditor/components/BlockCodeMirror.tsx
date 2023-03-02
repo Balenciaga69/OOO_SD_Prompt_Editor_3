@@ -1,12 +1,12 @@
+import { simpleTagsToCode } from '@/utils/old-parser-from-angular'
 import { Box, Button, Group, Paper } from '@mantine/core'
+import { useClipboard } from '@mantine/hooks'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import { dracula } from '@uiw/codemirror-theme-dracula'
 import CodeMirror from '@uiw/react-codemirror'
 import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
-import { useClipboard, useDebouncedState } from '@mantine/hooks'
-import { simpleTagsToCode } from '@/utils/old-parser-from-angular'
 const useBlockCodeMirror = () => {
   const { dispatch, thisActions, thisState } = useTagEditor()
   const { setState, submitCode } = thisActions
@@ -28,19 +28,6 @@ export const BlockCodeMirror: FC = () => {
 const CodePanel: FC = () => {
   const { setState, thisState } = useBlockCodeMirror()
   const { atomList, inputText } = thisState
-  const [debText, setDebText] = useDebouncedState(inputText, 200)
-  /**
-   * fix update input freq issue
-   */
-  // useEffect(() => {
-  //   setState({ inputText: debText })
-  // }, [debText])
-  // useEffect(() => {
-  //   setDebText(inputText)
-  // }, [inputText])
-  /**
-   * auto input atom list to code
-   */
   useEffect(() => {
     const nextText = simpleTagsToCode(atomList, 'split')
     setState({ inputText: nextText })

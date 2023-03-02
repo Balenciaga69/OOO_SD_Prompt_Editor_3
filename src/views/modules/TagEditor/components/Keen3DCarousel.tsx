@@ -29,10 +29,10 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
     const containerDeg = 360 * slider.track.details.progress
     const slideDeg = 360 / slideCount
     slider.container.style.transform = `translateZ(-${z}px) rotateY(${-containerDeg}deg)`
-    _.forEach(slider.slides, (slide, i) => {
+    for (let i = 0; i < slider.slides.length; i++) {
       const slideRotation = slideDeg * i
-      slide.style.transform = `rotateY(${slideRotation}deg) translateZ(${z}px)`
-    })
+      slider.slides[i].style.transform = `rotateY(${slideRotation}deg) translateZ(${z}px)`
+    }
   }
 }
 

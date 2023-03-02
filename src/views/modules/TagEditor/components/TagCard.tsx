@@ -33,9 +33,9 @@ export const TagCard: FC<TagCardProps> = ({ tagAtom }) => {
 export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
   const { removeOne } = useTagCard()
   const { attributes, listeners } = useSortable({ id: tagAtom.id })
-  const handleXIconClick = useCallback(() => {
+  const handleXIconClick = () => {
     removeOne(tagAtom.id)
-  }, [tagAtom, removeOne])
+  }
   return (
     <tr>
       <td className='w-20'>
@@ -60,18 +60,16 @@ export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
 }
 const RowNumberWeight: FC<TagCardProps> = ({ tagAtom }) => {
   const { updateOne } = useTagCard()
-  const handleNumMinusClick = useCallback(() => {
+  const handleNumMinusClick = () => {
     if (tagAtom.numberWeight <= 0.1) return
     const nextNumberWeight = _.toNumber((tagAtom.numberWeight - 0.1).toFixed(1))
     updateOne({ id: tagAtom.id, changes: { numberWeight: nextNumberWeight, bracketWeight: 0 } })
-  }, [tagAtom, updateOne])
-
-  const handleNumAddClick = useCallback(() => {
+  }
+  const handleNumAddClick = () => {
     if (tagAtom.numberWeight >= 2.0) return
     const nextNumberWeight = _.toNumber((tagAtom.numberWeight + 0.1).toFixed(1))
     updateOne({ id: tagAtom.id, changes: { numberWeight: nextNumberWeight, bracketWeight: 0 } })
-  }, [tagAtom, updateOne])
-
+  }
   return (
     <tr>
       <td className='w-20'>
@@ -87,18 +85,16 @@ const RowNumberWeight: FC<TagCardProps> = ({ tagAtom }) => {
 }
 export const RowBracketWeight: FC<TagCardProps> = ({ tagAtom }) => {
   const { updateOne } = useTagCard()
-
-  const handleBracketMinusClick = useCallback(() => {
+  const handleBracketMinusClick = () => {
     if (tagAtom.bracketWeight <= -5) return
     const nextBracketWeight = tagAtom.bracketWeight - 1
     updateOne({ id: tagAtom.id, changes: { bracketWeight: nextBracketWeight, numberWeight: 1 } })
-  }, [tagAtom, updateOne])
-
-  const handleBracketAddClick = useCallback(() => {
+  }
+  const handleBracketAddClick = () => {
     if (tagAtom.bracketWeight >= 10) return
     const nextBracketWeight = tagAtom.bracketWeight + 1
     updateOne({ id: tagAtom.id, changes: { bracketWeight: nextBracketWeight, numberWeight: 1 } })
-  }, [tagAtom, updateOne])
+  }
   return (
     <tr>
       <td className='w-20'>
