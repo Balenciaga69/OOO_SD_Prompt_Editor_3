@@ -13,13 +13,13 @@ export const groupMixerSlice = createSlice({
   initialState: initialState,
   reducers: {
     setState: (state, { payload }: PayloadAction<Partial<GroupMixerState>>) => ({ ...state, ...payload }),
-    isNot8: () => undefined,
+    isNotFilled: () => undefined,
   },
 })
 export function* groupMixerSaga(): SagaIterator {
-  yield takeEvery(groupMixerSlice.actions.isNot8.type, isNot8)
+  yield takeEvery(groupMixerSlice.actions.isNotFilled.type, isNotFilled)
 }
-function* isNot8(): SagaIterator {
+function* isNotFilled(): SagaIterator {
   const thisState = (yield select((state: RootState) => state.modules.groupMixer)) as unknown as GroupMixerState
   if (thisState.itemList.length !== 8) {
     const newGroupList: MixerItem[] = _.times(8, (i) => ({

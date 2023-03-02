@@ -35,7 +35,7 @@ export const CarouselItem: FC<CarouselItemProps> = (props) => {
       )}
       {!isCurrent && (
         <ScrollArea type='never' h='100%'>
-          <SkeletonSection length={tagGroup.tagIDs.length} />
+          <SkeletonSection length={tagGroup.atomIDs.length} />
         </ScrollArea>
       )}
     </Card>
@@ -72,7 +72,7 @@ const ActionSection: FC<CarouselItemProps> = (props) => {
   const { addOne, removeOne, allGroupList } = useCarouselItem()
   const handleAddClick = () => {
     const id = nanoid()
-    addOne({ id, tagIDs: [], title: id })
+    addOne({ id, atomIDs: [], title: id })
   }
   const handleRemoveClick = () => {
     const removeID = tagGroup.id

@@ -15,10 +15,10 @@ interface Props {
 const useMain = () => {
   const { thisState, dispatch, thisActions } = useGroupMixer()
   const { itemList: groupList } = thisState
-  const { setState, isNot8 } = thisActions
-  const actionCreators = bindActionCreators({ setState, isNot8 }, dispatch)
+  const { setState, isNotFilled } = thisActions
+  const actionCreators = bindActionCreators({ setState, isNotFilled }, dispatch)
   useEffect(() => {
-    actionCreators.isNot8()
+    actionCreators.isNotFilled()
   }, [])
   return { ...actionCreators, groupList }
 }

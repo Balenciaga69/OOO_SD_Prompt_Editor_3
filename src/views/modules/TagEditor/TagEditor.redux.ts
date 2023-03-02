@@ -27,7 +27,7 @@ export function* tagEditorSaga(): SagaIterator {
 function* initTagEditor(): SagaIterator {
   const thisState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
   if (!thisState.group) {
-    const newGroup: TagGroup = { id: nanoid(), tagIDs: [], title: 'my First Tag Group' }
+    const newGroup: TagGroup = { id: nanoid(), atomIDs: [], title: 'my First Tag Group' }
     yield put(tagGroupSlice.actions.addOne(newGroup))
     yield put(tagEditorSlice.actions.setState({ group: newGroup, atomList: [], inputText: '' }))
   }
@@ -37,7 +37,7 @@ function* submitCode(): SagaIterator {
   const thisState = (yield select((state: RootState) => state.modules.tagEditor)) as unknown as TagEditorState
   const thisGroup = thisState.group
   if (!thisGroup) return
-  const { tagIDs: oldIDs } = thisGroup
+  const { atomIDs: oldIDs } = thisGroup
   const { inputText } = thisState
   const edgeResult = getInputEdgeError(inputText)
   const pairResult = getInputPairError(inputText)
@@ -49,5 +49,5 @@ function* submitCode(): SagaIterator {
     yield put(tagAtomSlice.actions.addMany(atomList))
   }
   yield put(tagAtomSlice.actions.removeMany(oldIDs))
-  yield put(tagGroupSlice.actions.updateOne({ changes: { tagIDs: newIDs }, id: thisGroup.id }))
+  yield put(tagGroupSlice.actions.updateOne({ changes: { atomIDs: newIDs }, id: thisGroup.id }))
 }

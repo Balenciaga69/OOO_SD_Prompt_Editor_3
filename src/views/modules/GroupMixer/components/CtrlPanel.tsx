@@ -20,7 +20,7 @@ const useControlPanel = () => {
     const groupList = _.compact(_.map(thisState.itemList, ({ groupID, weight }) => ({ group: tagGroupEntities[groupID], weight: weight })))
     return _.map(groupList, ({ group, weight }) => {
       if (_.isNil(group)) return { text: '', weight }
-      const atomList = _.compact(_.map(group.tagIDs, (id) => tagAtomEntities[id]))
+      const atomList = _.compact(_.map(group.atomIDs, (id) => tagAtomEntities[id]))
       return { text: simpleTagsToCode(atomList, 'split'), weight }
     })
   }, [thisState, tagGroupEntities, tagAtomEntities])

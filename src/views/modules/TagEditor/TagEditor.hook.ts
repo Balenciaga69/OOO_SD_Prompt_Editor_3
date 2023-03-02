@@ -13,10 +13,10 @@ export const useTagEditor = () => {
   const allAtomList = _.compact(_.values(tagAtomEntities))
   useEffect(() => {
     if (thisState.group) {
-      const nextAtomList = _.compact(_.map(thisState.group?.tagIDs, (id) => tagAtomEntities[id]))
+      const nextAtomList = _.compact(_.map(thisState.group?.atomIDs, (id) => tagAtomEntities[id]))
       dispatch(thisActions.setState({ atomList: nextAtomList }))
     }
-  }, [tagAtomEntities, thisState.group?.tagIDs])
+  }, [tagAtomEntities, thisState.group?.atomIDs])
   useEffect(() => {
     if (thisState.group) {
       const nextGroup = tagGroupEntities[thisState.group.id]

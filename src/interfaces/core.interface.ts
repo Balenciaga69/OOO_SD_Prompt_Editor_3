@@ -7,7 +7,7 @@ export interface TagAtom {
 export interface TagGroup {
   id: string
   title: string
-  tagIDs: string[]
+  atomIDs: string[]
 }
 export interface TagEditorState {
   inputText: string

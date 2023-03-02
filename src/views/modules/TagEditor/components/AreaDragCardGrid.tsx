@@ -23,7 +23,7 @@ interface Props {
 export const AreaDragCardGrid: FC<Props> = (props) => {
   const { tagGroup } = props
   const { updateOneGroup, tagAtomEntities } = useAreaDragCardGrid()
-  const areaAtomList = useMemo(() => _.compact(_.map(tagGroup.tagIDs, (id) => tagAtomEntities[id])), [tagGroup, tagAtomEntities])
+  const areaAtomList = useMemo(() => _.compact(_.map(tagGroup.atomIDs, (id) => tagAtomEntities[id])), [tagGroup, tagAtomEntities])
   function handleDragEnd(event: DragEndEvent): void {
     const { active, over } = event
     if (over && active && active.id !== over.id) {
@@ -31,7 +31,7 @@ export const AreaDragCardGrid: FC<Props> = (props) => {
       const newIdx = _.findIndex(areaAtomList, ['id', over.id])
       const newItems = arrayMove(areaAtomList, oldIdx, newIdx)
       const IDs = _.map(newItems, 'id')
-      updateOneGroup({ id: tagGroup.id, changes: { tagIDs: IDs } })
+      updateOneGroup({ id: tagGroup.id, changes: { atomIDs: IDs } })
     }
   }
   return (
