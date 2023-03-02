@@ -4,8 +4,8 @@ import React, { FC } from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import './assets/scss/style.scss'
-import { appStore } from './redux'
 import { AppRoutes } from './core'
+import { appStore } from './redux'
 
 const Main: FC = () => {
   const [colorScheme, toggleColorScheme] = useToggle<ColorScheme>(['dark', 'light'])
