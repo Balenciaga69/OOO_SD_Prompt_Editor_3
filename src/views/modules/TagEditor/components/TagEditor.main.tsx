@@ -9,7 +9,7 @@ const useHook = () => {
   const { dispatch, thisActions } = useTagEditor()
   const { initTagEditor } = thisActions
   useEffect(() => {
-    initTagEditor()
+    dispatch(initTagEditor())
   }, [dispatch, initTagEditor])
 }
 export const TagEditor: FC = () => {
