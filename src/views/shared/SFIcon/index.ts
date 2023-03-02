@@ -1,1 +1,1 @@
-export * from './components/SFIcon'
+export * from './SFIcon'

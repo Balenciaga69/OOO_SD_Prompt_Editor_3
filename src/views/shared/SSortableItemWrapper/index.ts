@@ -1,1 +1,1 @@
-export * from './components/SSortableItemWrapper'
+export * from './SSortableItemWrapper'

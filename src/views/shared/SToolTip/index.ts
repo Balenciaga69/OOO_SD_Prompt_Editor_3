@@ -1,1 +1,1 @@
-export * from './components/SToolTip'
+export * from './SToolTip'
