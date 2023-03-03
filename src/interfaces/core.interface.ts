@@ -11,8 +11,7 @@ export interface TagGroup {
 }
 export interface TagEditorState {
   inputText: string
-  group: TagGroup | null
-  atomList: TagAtom[]
+  groupID: string
 }
 
 export interface MixerItem {
