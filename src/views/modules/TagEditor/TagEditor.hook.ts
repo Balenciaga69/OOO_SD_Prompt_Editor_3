@@ -1,28 +1,26 @@
 import { RootState } from '@/redux'
 import _ from 'lodash'
+import { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { tagEditorSlice } from './TagEditor.redux'
-import { useEffect } from 'react'
 export const useTagEditor = () => {
   const dispatch = useDispatch()
-  const thisState = useSelector((state: RootState) => state.modules.tagEditor)
-  const thisActions = tagEditorSlice.actions
+  const tagEditorActions = tagEditorSlice.actions
+  const tagEditorState = useSelector((state: RootState) => state.modules.tagEditor)
   const tagGroupEntities = useSelector((state: RootState) => state.shared.tagGroup.entities)
   const tagAtomEntities = useSelector((state: RootState) => state.shared.tagAtom.entities)
-  const allGroupList = _.compact(_.values(tagGroupEntities))
-  const allAtomList = _.compact(_.values(tagAtomEntities))
-  useEffect(() => {
-    if (thisState.group) {
-      const nextAtomList = _.compact(_.map(thisState.group?.atomIDs, (id) => tagAtomEntities[id]))
-      dispatch(thisActions.setState({ atomList: nextAtomList }))
-    }
-  }, [tagAtomEntities, thisState.group?.atomIDs])
-  useEffect(() => {
-    if (thisState.group) {
-      const nextGroup = tagGroupEntities[thisState.group.id]
-      if (nextGroup) dispatch(thisActions.setState({ group: nextGroup }))
-    }
-  }, [tagGroupEntities])
 
-  return { dispatch, thisState, thisActions, allGroupList, allAtomList, tagAtomEntities, tagGroupEntities }
+  const currentGroupInfo = useMemo(() => {
+    if (_.isEmpty(tagEditorState.groupID)) return
+    const { groupID } = tagEditorState
+    return tagGroupEntities[groupID]
+  }, [tagEditorState, tagGroupEntities])
+
+  const currentAtomList = useMemo(() => {
+    if (_.isUndefined(currentGroupInfo)) return []
+    const { atomIDs } = currentGroupInfo
+    return _.compact(_.map(atomIDs, (id) => tagAtomEntities[id]))
+  }, [tagAtomEntities, currentGroupInfo])
+
+  return { dispatch, tagEditorState, tagEditorActions, currentGroupInfo, currentAtomList, tagAtomEntities, tagGroupEntities }
 }

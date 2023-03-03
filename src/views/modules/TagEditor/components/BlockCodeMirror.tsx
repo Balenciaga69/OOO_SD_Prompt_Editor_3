@@ -8,10 +8,10 @@ import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
 const useBlockCodeMirror = () => {
-  const { dispatch, thisActions, thisState } = useTagEditor()
-  const { setState, submitCode } = thisActions
-  const actionCreators = bindActionCreators({ setState, submitCode }, dispatch)
-  return { thisState, ...actionCreators }
+  const { dispatch, tagEditorActions, tagEditorState, currentAtomList } = useTagEditor()
+  const { setInputText, submitInputText } = tagEditorActions
+  const actionCreators = bindActionCreators({ setInputText, submitInputText }, dispatch)
+  return { currentAtomList, tagEditorState, ...actionCreators }
 }
 export const BlockCodeMirror: FC = () => {
   return (
@@ -26,34 +26,34 @@ export const BlockCodeMirror: FC = () => {
   )
 }
 const CodePanel: FC = () => {
-  const { setState, thisState } = useBlockCodeMirror()
-  const { atomList, inputText } = thisState
+  const { setInputText, tagEditorState, currentAtomList } = useBlockCodeMirror()
+  const { inputText } = tagEditorState
   useEffect(() => {
-    const nextText = simpleTagsToCode(atomList, 'split')
-    setState({ inputText: nextText })
-  }, [atomList])
+    const nextText = simpleTagsToCode(currentAtomList, 'split')
+    setInputText({ inputText: nextText })
+  }, [currentAtomList, setInputText])
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
-  return <CodeMirror value={inputText} placeholder={defaultText} maxHeight={maxHeight} onChange={(text) => setState({ inputText: text })} theme={dracula} />
+  return <CodeMirror value={inputText} placeholder={defaultText} maxHeight={maxHeight} onChange={(text) => setInputText({ inputText: text })} theme={dracula} />
 }
 const ControlPanel: FC = () => {
   const clipboard = useClipboard({ timeout: 500 })
-  const { setState, submitCode, thisState } = useBlockCodeMirror()
-  const { atomList, inputText } = thisState
+  const { setInputText, submitInputText, currentAtomList, tagEditorState } = useBlockCodeMirror()
+  const { inputText } = tagEditorState
   const handleSplitClick = () => {
-    const nextText = simpleTagsToCode(atomList, 'split')
-    setState({ inputText: nextText })
+    const nextText = simpleTagsToCode(currentAtomList, 'split')
+    setInputText({ inputText: nextText })
   }
   const handleUnderScoreClick = () => {
     const nextText = _.replace(inputText, /[^\S\n]/g, '_')
-    setState({ inputText: nextText })
+    setInputText({ inputText: nextText })
   }
   const handleTrimClick = () => {
-    const nextText = simpleTagsToCode(atomList, 'zip')
-    setState({ inputText: nextText })
+    const nextText = simpleTagsToCode(currentAtomList, 'zip')
+    setInputText({ inputText: nextText })
   }
   const handleRefreshClick = () => {
-    submitCode()
+    submitInputText()
   }
   const handleCopyCodeClick = () => {
     clipboard.copy(inputText)
