@@ -13,7 +13,6 @@ export function* localStorageSaga(): SagaIterator {
 }
 
 function* initStateFromLocal({ payload }: PayloadAction<{ state: RootState }>): SagaIterator {
-  console.info(' watchThis initStateFromLocal')
   const { state } = payload
   const { modules, shared } = state
   const { tagEditor, groupMixer } = modules

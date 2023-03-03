@@ -29,9 +29,9 @@ const CodePanel: FC = () => {
   const { setInputText, tagEditorState, currentAtomList } = useBlockCodeMirror()
   const { inputText } = tagEditorState
   useEffect(() => {
-    const nextText = simpleTagsToCode(currentAtomList, 'split')
-    setInputText({ inputText: nextText })
-  }, [currentAtomList, setInputText])
+    const updatedInputText = simpleTagsToCode(currentAtomList, 'split')
+    setInputText({ inputText: updatedInputText })
+  }, [currentAtomList])
   const defaultText = `(masterpiece:1.2),((ultra-detail)),[1Girl]...`
   const maxHeight = 'calc(100vh - 24px)'
   return <CodeMirror value={inputText} placeholder={defaultText} maxHeight={maxHeight} onChange={(text) => setInputText({ inputText: text })} theme={dracula} />

@@ -13,10 +13,9 @@ interface CarouselItemProps {
   tagGroup: TagGroup
 }
 const useCarouselItem = () => {
-  const { dispatch, tagGroupEntities, tagEditorState, tagEditorActions } = useTagEditor()
+  const { dispatch, tagGroupEntities, tagEditorState } = useTagEditor()
   const groupEntitiesLength = _.values(tagGroupEntities).length
-  const { setGroupID } = tagEditorActions
-  const actionCreators = bindActionCreators({ ...tagGroupSlice.actions, setGroupID }, dispatch)
+  const actionCreators = bindActionCreators({ ...tagGroupSlice.actions }, dispatch)
   return { ...actionCreators, groupEntitiesLength, tagEditorState }
 }
 export const CarouselItem: FC<CarouselItemProps> = (props) => {
@@ -49,11 +48,10 @@ const NamingSection: FC<CarouselItemProps> = (props) => {
   // 降低更新store的頻率
   useEffect(() => {
     updateOne({ changes: { title }, id: props.tagGroup.id })
-  }, [debounced, updateOne, props, title])
-  // inputValue from Props=>store
+  }, [debounced])
   useEffect(() => {
     setTitle(props.tagGroup.title)
-  }, [props])
+  }, [props.tagGroup.title])
   return (
     <Card.Section inheritPadding>
       <Input size='xl' fw='bolder' variant='unstyled' placeholder='My tag block name is...' maxLength={30} value={title} onChange={(e) => setTitle(e.target.value)} />

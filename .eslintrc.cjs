@@ -12,6 +12,7 @@ module.exports = {
       extends: ['eslint:recommended', 'plugin:react/recommended', 'plugin:@typescript-eslint/recommended', 'plugin:lodash/recommended', 'plugin:jsx-a11y/recommended', 'plugin:react-hooks/recommended', 'plugin:promise/recommended', 'prettier'],
       rules: {
         'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'off',
         '@typescript-eslint/explicit-function-return-type': ['off'],
         'lodash/import-scope': [2, 'full'],
         'react/self-closing-comp': [

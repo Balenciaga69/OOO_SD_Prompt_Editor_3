@@ -14,13 +14,13 @@ export const useTagEditor = () => {
     if (_.isEmpty(tagEditorState.groupID)) return
     const { groupID } = tagEditorState
     return tagGroupEntities[groupID]
-  }, [tagEditorState, tagGroupEntities])
+  }, [tagEditorState.groupID, tagGroupEntities])
 
   const currentAtomList = useMemo(() => {
     if (_.isUndefined(currentGroupInfo)) return []
     const { atomIDs } = currentGroupInfo
     return _.compact(_.map(atomIDs, (id) => tagAtomEntities[id]))
-  }, [tagAtomEntities, currentGroupInfo])
+  }, [tagAtomEntities, currentGroupInfo?.atomIDs])
 
   return { dispatch, tagEditorState, tagEditorActions, currentGroupInfo, currentAtomList, tagAtomEntities, tagGroupEntities }
 }

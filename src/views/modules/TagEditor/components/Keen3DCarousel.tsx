@@ -46,6 +46,7 @@ const useKeen3DCarousel = () => {
 
 export const Keen3DCarousel: FC = () => {
   const { setGroupID, tagEditorState, tagGroupList } = useKeen3DCarousel()
+  const tagGroupListLength = tagGroupList.length
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -67,21 +68,21 @@ export const Keen3DCarousel: FC = () => {
   /**
    * fix delete carousel item bug
    */
+
   useEffect(() => {
     if (_.isNil(tagGroupList[rel])) return
     const groupID = tagGroupList[rel].id
     setGroupID({ groupID })
-  }, [tagGroupList, rel, setGroupID])
+  }, [tagGroupListLength, rel])
   /**
    * fix load file bug
    */
   useEffect(() => {
     if (!tagGroupList[rel] || _.isEmpty(tagEditorState.groupID)) return
-    if (tagEditorState.groupID !== tagGroupList[rel].id) {
-      const groupID = tagGroupList[rel].id
-      setGroupID({ groupID })
-    }
-  }, [tagEditorState, tagGroupList, setGroupID, rel])
+    if (tagEditorState.groupID === tagGroupList[rel].id) return
+    const groupID = tagGroupList[rel].id
+    setGroupID({ groupID })
+  }, [tagGroupList, tagEditorState.groupID])
   return (
     <Box className='wrapper Keen3DCarousel'>
       <Box className='scene'>
