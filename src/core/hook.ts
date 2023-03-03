@@ -17,7 +17,7 @@ export const useMyLocal = () => {
         localStorage.clear()
       }
     }
-  }, [dispatch])
+  }, [dispatch, store])
   const save = useCallback(() => {
     const state = store.getState()
     localStorage.setItem(RD.LOCAL_STORAGE_KEY.REDUX, JSON.stringify(state))

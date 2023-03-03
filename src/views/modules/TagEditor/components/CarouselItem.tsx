@@ -13,15 +13,15 @@ interface CarouselItemProps {
   tagGroup: TagGroup
 }
 const useCarouselItem = () => {
-  const { dispatch, allGroupList, thisState, thisActions } = useTagEditor()
-  const { setState } = thisActions
-  const actionCreators = bindActionCreators({ ...tagGroupSlice.actions, setState }, dispatch)
-  return { ...actionCreators, allGroupList, thisState }
+  const { dispatch, tagGroupEntities, tagEditorState } = useTagEditor()
+  const groupEntitiesLength = _.values(tagGroupEntities).length
+  const actionCreators = bindActionCreators({ ...tagGroupSlice.actions }, dispatch)
+  return { ...actionCreators, groupEntitiesLength, tagEditorState }
 }
 export const CarouselItem: FC<CarouselItemProps> = (props) => {
   const { tagGroup } = props
-  const { thisState } = useCarouselItem()
-  const isCurrent = thisState.group && tagGroup.id === thisState.group.id
+  const { tagEditorState } = useCarouselItem()
+  const isCurrent = tagGroup.id === tagEditorState.groupID
   return (
     <Card h='100%' style={{ backgroundColor: '#1a1b1e60' }} withBorder className='CarouselItem overflow-visible'>
       {isCurrent && (
@@ -49,10 +49,9 @@ const NamingSection: FC<CarouselItemProps> = (props) => {
   useEffect(() => {
     updateOne({ changes: { title }, id: props.tagGroup.id })
   }, [debounced])
-  // inputValue from Props=>store
   useEffect(() => {
     setTitle(props.tagGroup.title)
-  }, [props])
+  }, [props.tagGroup.title])
   return (
     <Card.Section inheritPadding>
       <Input size='xl' fw='bolder' variant='unstyled' placeholder='My tag block name is...' maxLength={30} value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -69,7 +68,7 @@ const DragSection: FC<CarouselItemProps> = (props) => {
 }
 const ActionSection: FC<CarouselItemProps> = (props) => {
   const { tagGroup } = props
-  const { addOne, removeOne, allGroupList } = useCarouselItem()
+  const { addOne, removeOne, groupEntitiesLength } = useCarouselItem()
   const handleAddClick = () => {
     const id = nanoid()
     addOne({ id, atomIDs: [], title: id })
@@ -81,14 +80,14 @@ const ActionSection: FC<CarouselItemProps> = (props) => {
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
   return (
     <Box>
-      {allGroupList.length < 10 && (
+      {groupEntitiesLength < 10 && (
         <Box className='plus'>
           <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleAddClick}>
             <SFIcon icon='faPlus' iconProps={iconProps} />
           </ActionIcon>
         </Box>
       )}
-      {allGroupList.length > 1 && (
+      {groupEntitiesLength > 1 && (
         <Box className='minus'>
           <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleRemoveClick}>
             <SFIcon icon='faMinus' iconProps={iconProps} />

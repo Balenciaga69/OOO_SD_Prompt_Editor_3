@@ -54,6 +54,5 @@ const mixAll = (weightTextList: WeightText[]): string => {
     .filter((item) => !_.isEmpty(item.text))
     .map(({ text, weight }) => `${_.repeat('(', weight)}${text}${_.repeat(')', weight)}`)
     .join(`,\n`)
-  console.info(' watchThis result:', result)
   return result
 }

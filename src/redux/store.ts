@@ -1,4 +1,4 @@
-import { groupMixerSaga, groupMixerSlice } from './../views/modules/GroupMixer/GroupMixer.redux'
+import { groupMixerSaga, groupMixerSlice } from '@/views/modules/GroupMixer'
 import { tagEditorSaga, tagEditorSlice } from '@/views/modules/TagEditor'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware, { SagaIterator } from 'redux-saga'

@@ -37,14 +37,16 @@ const carouselPlugin: KeenSliderPlugin = (slider) => {
 }
 
 const useKeen3DCarousel = () => {
-  const { thisActions, dispatch, thisState, allGroupList } = useTagEditor()
-  const { setState } = thisActions
-  const actionCreators = bindActionCreators({ setState }, dispatch)
-  return { allGroupList, ...actionCreators, thisState }
+  const { tagEditorActions, dispatch, tagEditorState, tagGroupEntities } = useTagEditor()
+  const { setGroupID } = tagEditorActions
+  const actionCreators = bindActionCreators({ setGroupID }, dispatch)
+  const tagGroupList = _.compact(_.values(tagGroupEntities))
+  return { tagGroupList, tagEditorState, ...actionCreators }
 }
 
 export const Keen3DCarousel: FC = () => {
-  const { allGroupList, setState, thisState } = useKeen3DCarousel()
+  const { setGroupID, tagEditorState, tagGroupList } = useKeen3DCarousel()
+  const tagGroupListLength = tagGroupList.length
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
     {
       loop: true,
@@ -66,27 +68,27 @@ export const Keen3DCarousel: FC = () => {
   /**
    * fix delete carousel item bug
    */
+
   useEffect(() => {
-    if (_.isNil(allGroupList[rel])) return
-    const group = allGroupList[rel]
-    setState({ group })
-  }, [allGroupList.length, rel])
+    if (_.isNil(tagGroupList[rel])) return
+    const groupID = tagGroupList[rel].id
+    setGroupID({ groupID })
+  }, [tagGroupListLength, rel])
   /**
    * fix load file bug
    */
   useEffect(() => {
-    if (!allGroupList[rel] || !thisState.group) return
-    if (thisState.group.id !== allGroupList[rel].id) {
-      const group = allGroupList[rel]
-      setState({ group })
-    }
-  }, [thisState, allGroupList])
+    if (!tagGroupList[rel] || _.isEmpty(tagEditorState.groupID)) return
+    if (tagEditorState.groupID === tagGroupList[rel].id) return
+    const groupID = tagGroupList[rel].id
+    setGroupID({ groupID })
+  }, [tagGroupList, tagEditorState.groupID])
   return (
     <Box className='wrapper Keen3DCarousel'>
       <Box className='scene'>
-        {allGroupList.length > 1 && <IconBoxes changeSlide={changeSlide} />}
+        {tagGroupList.length > 1 && <IconBoxes changeSlide={changeSlide} />}
         <div className='keen-slider' ref={sliderRef}>
-          {_.map(allGroupList, (group, i) => (
+          {_.map(tagGroupList, (group, i) => (
             <div key={i} className='carousel__cell'>
               <CarouselItem tagGroup={group} />
             </div>

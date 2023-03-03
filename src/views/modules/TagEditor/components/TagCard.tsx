@@ -6,7 +6,7 @@ import { FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box, Card, Flex, Group, HoverCard, Table, Text } from '@mantine/core'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import _ from 'lodash'
-import React, { FC, ReactNode, useCallback } from 'react'
+import React, { FC, ReactNode } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
 interface TagCardProps {
   tagAtom: TagAtom

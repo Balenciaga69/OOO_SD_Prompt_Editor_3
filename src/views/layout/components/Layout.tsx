@@ -12,7 +12,7 @@ const useLayout = () => {
   const { load } = useMyLocal()
   useEffect(() => {
     load()
-  }, [])
+  }, [load])
 }
 export const Layout: FC = () => {
   useLayout()

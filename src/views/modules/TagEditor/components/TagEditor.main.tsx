@@ -6,11 +6,11 @@ import '../TagEditor.scss'
 import { BlockCodeMirror } from './BlockCodeMirror'
 import { BlockTagVisual } from './BlockTagVisual'
 const useHook = () => {
-  const { dispatch, thisActions } = useTagEditor()
-  const { initTagEditor } = thisActions
+  const { dispatch, tagEditorActions } = useTagEditor()
+  const { initialize } = tagEditorActions
   useEffect(() => {
-    dispatch(initTagEditor())
-  }, [dispatch, initTagEditor])
+    dispatch(initialize())
+  }, [dispatch, initialize])
 }
 export const TagEditor: FC = () => {
   useHook()
