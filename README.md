@@ -1,7 +1,9 @@
-# 以下README.md 來自ChatGPT產出的的總結
-# WEI-UI AI-Art Prompt Editor
 
-This project is developed using React and Typescript and is deployed on Netlify as a static website. It utilizes Mantine and Bootstrap as its primary styling frameworks and also integrates several NPM packages such as CodeMirror and Dnd-kit.
+# WEB-UI AI-Art Prompt Editor v3 (React 18)
+
+This project is the third version of the WEB-UI AI-Art Prompt Editor. The first version was abandoned and the second version was developed using Angular 14. In this latest version, React 18 was used instead.
+
+This project is deployed on Netlify as a static website. It utilizes Mantine and Bootstrap as its primary styling frameworks and also integrates several NPM packages such as CodeMirror and Dnd-kit.
 
 The main purpose of this web application is to provide an advanced version of AI drawing prompt editor, which is more user-friendly and convenient to use compared to the basic text editor provided by web UI.
 
@@ -24,3 +26,5 @@ The main purpose of this web application is to provide an advanced version of AI
 ## Deployment
 
 This project is deployed on Netlify and can be accessed through the following link: https://web-ui-tag-helper-v3.netlify.app/tag#editor.
+
+# 以上README.md 來自ChatGPT產出的的總結
