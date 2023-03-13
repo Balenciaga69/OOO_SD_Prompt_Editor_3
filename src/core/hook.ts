@@ -4,6 +4,7 @@ import _ from 'lodash'
 import { useDispatch, useStore } from 'react-redux'
 import Swal from 'sweetalert2'
 import { RD } from './RD'
+
 export const useMyLocal = () => {
   const store = useStore()
   const dispatch = useDispatch()
@@ -32,5 +33,6 @@ export const useMyLocal = () => {
     localStorage.clear()
     window.location.reload()
   }
+
   return { load, save, clear }
 }

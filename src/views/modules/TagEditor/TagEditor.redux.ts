@@ -1,5 +1,3 @@
-import Swal, { SweetAlertResult } from 'sweetalert2'
-import { getErrorSweetAlertOptions } from './../../../utils/sweetAlertHelper'
 import { TagAtom, TagEditorState, TagGroup } from '@/interfaces/core.interface'
 import { RootState, tagAtomSlice, tagGroupSlice } from '@/redux'
 import { codeSyntaxCheckFuncs, simpleTagParserFromAngular } from '@/utils'
@@ -7,6 +5,8 @@ import { Dictionary, PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit
 import _ from 'lodash'
 import { SagaIterator } from 'redux-saga'
 import { call, put, select, takeEvery } from 'redux-saga/effects'
+import Swal from 'sweetalert2'
+import { getErrorSweetAlertOptions } from './../../../utils/sweetAlertHelper'
 
 const initialState: TagEditorState = {
   groupID: '',
