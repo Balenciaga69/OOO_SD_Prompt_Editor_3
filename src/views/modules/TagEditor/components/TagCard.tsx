@@ -81,18 +81,13 @@ export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
 }
 
 /**
- * 更新TagCard的權重，可增加或減少數字權重與括弧權重。
- * @function useTagCard
- * @returns {Object} actionCreators - 用於更新store的actionCreators
- *
- * @function RowNumberWeight
- * @param {TagCardProps} props - 包含單個tag atom的屬性(prop)
- * @returns {JSX.Element} - 包含更新數字權重的tr元素
- *
- * @function RowBracketWeight
- * @param {TagCardProps} props - 包含單個tag atom的屬性(prop)
- * @returns {JSX.Element} - 包含更新括弧權重的tr元素
+ * 此函數為一個React元件，用於渲染帶有加減號的標籤權重組件
+ * 該組件接受一個標籤原子(tagAtom)作為參數，並使用useTagCard() Hook獲取對應的狀態更新方法
+ * handleNumMinusClick()和handleNumAddClick()函數分別用於減少和增加標籤權重
+ * 當標籤權重小於等於0.1或大於等於2.0時，將不再進行更新
+ * 在渲染時，該元件將渲染出一個帶有加減號的標籤權重組件，並將該組件嵌入到表格中
  */
+
 const RowNumberWeight: FC<TagCardProps> = ({ tagAtom }) => {
   const { updateOne } = useTagCard()
   const handleNumMinusClick = () => {
@@ -118,7 +113,15 @@ const RowNumberWeight: FC<TagCardProps> = ({ tagAtom }) => {
     </tr>
   )
 }
-export const RowBracketWeight: FC<TagCardProps> = ({ tagAtom }) => {
+
+/**
+ * 此函數為一個React元件，用於渲染帶有加減號的括號權重組件
+ * 該組件接受一個標籤原子(tagAtom)作為參數，並使用useTagCard() Hook獲取對應的狀態更新方法
+ * handleBracketMinusClick()和handleBracketAddClick()函數分別用於減少和增加括號權重
+ * 當括號權重小於等於-5或大於等於10時，將不再進行更新
+ * 在渲染時，該元件將渲染出一個帶有加減號的括號權重組件，並將該組件嵌入到表格中
+ */
+const RowBracketWeight: FC<TagCardProps> = ({ tagAtom }) => {
   const { updateOne } = useTagCard()
   const handleBracketMinusClick = () => {
     if (tagAtom.bracketWeight <= -5) return
@@ -151,10 +154,10 @@ interface WithNumHoverCardProps {
 }
 
 /**
- * @description 包装带有数字悬停卡的组件的高阶组件
- * @function
- * @param {WithNumHoverCardProps} props - 组件props对象
- * @returns {JSX.Element} - 返回一个包含悬停卡的组件
+ * 此函數為一個React元件，用於包裹一個子元素，並為該子元素加上帶有加減號的hover card效果
+ * 該元件接受一個React元素(children)、一個handleMinusIconClick函數和一個handlePlusIconClick函數作為參數
+ * handleMinusIconClick和handlePlusIconClick函數分別用於處理減少和增加數值的事件
+ * 在渲染時，該元件將渲染出一個HoverCard，當鼠標懸停在子元素上時，將出現帶有加減號的ActionIcon，並且在點擊後觸發對應的事件處理函數
  */
 const WithPlusMinusHoverCard: FC<WithNumHoverCardProps> = (props) => {
   const { children, handleMinusIconClick, handlePlusIconClick } = props
@@ -182,10 +185,13 @@ interface WithNameHoverCardProps {
 }
 
 /**
- * @description 包装带有名称悬停卡的组件的高阶组件
- * @function
- * @param {WithNameHoverCardProps} props - 组件props对象
- * @returns {JSX.Element} - 返回一个包含悬停卡的组件
+ * 這是一個函數元件，名為 WithNameHoverCard，其目的是呈現一個 HoverCard，當滑鼠移至目標元素上方時，顯示一個包含名稱和 X 按鈕的下拉選單。
+ *
+ * 這個函數元件接受以下 props：
+ * - children：ReactNode，代表觸發 HoverCard 的目標元素。
+ * - name：string，代表要顯示的名稱。
+ * - handleXIconClick：() => void，代表當使用者按下 X 按鈕時要觸發的函數。
+ * 這個函數元件會回傳一個 JSX.Element，代表整個 HoverCard 的樣式和結構。
  */
 const WithNameHoverCard: FC<WithNameHoverCardProps> = (props) => {
   const { children, name, handleXIconClick } = props
