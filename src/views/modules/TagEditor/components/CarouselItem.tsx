@@ -14,6 +14,9 @@ interface CarouselItemProps {
   tagGroup: TagGroup
 }
 
+/*
+ * 自訂 Hook，提供編輯標籤組的相關狀態和方法
+ */
 const useCarouselItem = () => {
   const { dispatch, tagGroupEntities, tagEditorState } = useTagEditor()
   const groupEntitiesLength = _.values(tagGroupEntities).length
@@ -21,11 +24,8 @@ const useCarouselItem = () => {
   return { ...actionCreators, groupEntitiesLength, tagEditorState }
 }
 
-/**
- * 輪播元素的 function component，用於顯示 tagGroup 資料的卡片
- *
- * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
- * @returns {JSX.Element} 返回一個 React 元件，顯示卡片內容
+/*
+ * 旋轉木馬項目，顯示標籤組內容，支援編輯、拖曳和刪除
  */
 export const CarouselItem: FC<CarouselItemProps> = (props) => {
   const { tagGroup } = props
@@ -52,10 +52,11 @@ export const CarouselItem: FC<CarouselItemProps> = (props) => {
 }
 
 /**
- * 用於顯示命名區塊的 function component
- *
- * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
- * @returns {JSX.Element} 返回一個 React 元件，顯示命名區塊內容
+ * 用於命名標籤區塊的名稱，
+ * 可以編輯並同步到 store 中。
+ * 透過 useDebouncedValue 可以降低更新 store 的頻率。
+ * @description
+ * 使用 useState、useEffect、useCarouselItem 和 useDebouncedValue hooks 實作
  */
 const NamingSection: FC<CarouselItemProps> = (props) => {
   const [title, setTitle] = useState(props.tagGroup.title)
@@ -79,10 +80,7 @@ const NamingSection: FC<CarouselItemProps> = (props) => {
 }
 
 /**
- * 用於顯示拖曳區塊的 function component
- *
- * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
- * @returns {JSX.Element} 返回一個 React 元件，顯示拖曳區塊內容
+ * 顯示可拖曳的標籤卡片列表
  */
 const DragSection: FC<CarouselItemProps> = (props) => {
   const { tagGroup: tagGroup } = props
@@ -94,10 +92,7 @@ const DragSection: FC<CarouselItemProps> = (props) => {
 }
 
 /**
- * 用於顯示操作區塊的 function component，包含新增和刪除區塊的按鈕
- *
- * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
- * @returns {JSX.Element} 返回一個 React 元件，顯示操作區塊內容
+ * 顯示編輯標籤組的相關按鈕，包括新增、刪除
  */
 const ActionSection: FC<CarouselItemProps> = (props) => {
   const { tagGroup } = props
@@ -136,9 +131,6 @@ const ActionSection: FC<CarouselItemProps> = (props) => {
 
 /**
  * 用於顯示骨架元素的 function component，根據 length 參數決定顯示骨架元素的數量
- *
- * @param {object} props - 由父元件傳入的 props，包含 length 屬性，決定顯示骨架元素的數量
- * @returns {JSX.Element} 返回一個 React 元件，顯示骨架元素內容
  */
 const SkeletonSection: FC<{ length: number }> = (props) => {
   return (

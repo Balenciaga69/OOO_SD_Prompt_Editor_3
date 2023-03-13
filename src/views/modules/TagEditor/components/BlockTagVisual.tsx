@@ -4,6 +4,9 @@ import { useTagEditor } from '../TagEditor.hook'
 import { Keen3DCarousel } from './Keen3DCarousel'
 import _ from 'lodash'
 
+/**
+ * 顯示標籤編輯器中標籤分組的3D輪播圖區塊
+ */
 export const BlockTagVisual: FC = () => {
   const { tagGroupEntities } = useTagEditor()
   const groupEntitiesLength = _.values(tagGroupEntities).length

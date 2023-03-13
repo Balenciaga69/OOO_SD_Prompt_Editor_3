@@ -8,19 +8,13 @@ import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
 
-/**
- * @description 用來編輯代碼的編輯器，支持代碼格式化、分割、壓縮等操作，使用CodeMirror編輯器庫。
- * @returns {Object} 一個包含了編輯器內容和編輯器操作的對象。
+/*
+ * 此函數為使用 Block CodeMirror 編輯器的 Hook。
  */
 const useBlockCodeMirror = () => {
   const { dispatch, tagEditorActions, tagEditorState, currentAtomList } = useTagEditor()
   const { setInputText, submitInputText, setPrevInputText } = tagEditorActions
   const actionCreators = bindActionCreators({ setInputText, setPrevInputText, submitInputText }, dispatch)
-
-  /**
-   * @description 將新的輸入文本更新至狀態中，並保存先前輸入文本。
-   * @param {string} text - 新的輸入文本。
-   */
   const setNextInputText = (text: string) => {
     actionCreators.setInputText({ inputText: text })
     actionCreators.setPrevInputText({ prevInputText: text })
@@ -28,9 +22,10 @@ const useBlockCodeMirror = () => {
   return { setNextInputText, currentAtomList, tagEditorState, ...actionCreators }
 }
 
-/**
- * @description 編輯代碼的主要面板，顯示代碼並且提供操作工具。
- * @returns {JSX.Element} CodeMirror代碼編輯器組件。
+/*
+ * 顯示程式碼區塊以及控制面板，並將當前的 Atom List 轉換為程式碼文字輸入框的內容
+ * 使用 useBlockCodeMirror hook 取得 currentAtomList 和 setNextInputText，並在 useEffect 中執行轉換邏輯
+ * 返回程式碼區塊和控制面板組件的容器 Box
  */
 export const BlockCodeMirror: FC = () => {
   const { currentAtomList, setNextInputText } = useBlockCodeMirror()
@@ -52,9 +47,8 @@ export const BlockCodeMirror: FC = () => {
   )
 }
 
-/**
- * CodePanel組件：顯示程式碼編輯區塊，並將輸入的程式碼反映到狀態中。
- * @description 這個組件包含一個程式碼編輯區塊，可以編輯程式碼，並且將輸入的程式碼反映到狀態中。
+/*
+ * 程式碼區塊組件，用於顯示程式碼及編輯
  */
 const CodePanel: FC = () => {
   const { setInputText, tagEditorState } = useBlockCodeMirror()
@@ -64,9 +58,9 @@ const CodePanel: FC = () => {
   return <CodeMirror value={inputText} placeholder={defaultText} maxHeight={maxHeight} onChange={(text) => setInputText({ inputText: text })} theme={dracula} />
 }
 
-/**
- * @description 編輯代碼的控制面板，包含代碼的操作工具和編輯器的一些狀態提示。
- * @returns {JSX.Element} 控制面板組件。
+/*
+ * 控制面板
+ * 用於顯示並處理編輯器的一些操作，包括將標籤轉成程式碼、加底線、切割和複製等等。
  */
 const ControlPanel: FC = () => {
   const clipboard = useClipboard({ timeout: 500 })
