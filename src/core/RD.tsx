@@ -3,9 +3,9 @@
  */
 export class RD {
   static AUTHOR = {
-    WEB_NAME: '咒語助手 v1.0',
+    WEB_NAME: '咒語助手 v1.2',
     GITHUB_URL: 'https://github.com/emilioCodigo',
-    UPDATE_VERSION: '2023/02/28',
+    UPDATE_VERSION: '2023/03/13',
     AUTHOR_NAME: 'Emilio Gonzales',
     FACEBOOK: 'https://www.facebook.com/profile.php?id=100012966612095',
     INSTAGRAM: 'https://www.instagram.com/dubstepill/',

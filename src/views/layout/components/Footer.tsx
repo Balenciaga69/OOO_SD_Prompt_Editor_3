@@ -6,7 +6,7 @@ import { HorizontalLogo } from './HorizontalLogo'
 
 export const Footer: FC = () => {
   const { H } = RD.STYLE.FOOTER
-  const { AUTHOR_NAME, GITHUB_URL, ABOUT_ME, INSTAGRAM, VERSION_1, VERSION_2 } = RD.AUTHOR
+  const { AUTHOR_NAME, GITHUB_URL, ABOUT_ME, INSTAGRAM, VERSION_2 } = RD.AUTHOR
   return (
     <MFooter className='footer z-0' height={H}>
       <Flex justify='stretch' align='center' h='100%'>
@@ -16,9 +16,6 @@ export const Footer: FC = () => {
           </Link>
           <Link to={ABOUT_ME}>
             <Text c='gray'>About Me</Text>
-          </Link>
-          <Link to={VERSION_1}>
-            <Text c='gray'>Version 1</Text>
           </Link>
           <Link to={VERSION_2}>
             <Text c='gray'>Version 2</Text>
