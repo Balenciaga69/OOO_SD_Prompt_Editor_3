@@ -1,8 +1,8 @@
 import { RD } from '@/core'
-import { Flex, List, Footer as MFooter, Text } from '@mantine/core'
+import { Flex, Footer as MFooter, Text } from '@mantine/core'
 import React, { FC } from 'react'
-import { HorizontalLogo } from './HorizontalLogo'
 import { Link } from 'react-router-dom'
+import { HorizontalLogo } from './HorizontalLogo'
 
 export const Footer: FC = () => {
   const { H } = RD.STYLE.FOOTER

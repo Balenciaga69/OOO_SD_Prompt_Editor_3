@@ -12,6 +12,7 @@ export interface TagGroup {
 export interface TagEditorState {
   inputText: string
   groupID: string
+  prevInputText: string
 }
 
 export interface MixerItem {
