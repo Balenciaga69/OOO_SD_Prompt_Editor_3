@@ -5,6 +5,10 @@ import { useTagEditor } from '../TagEditor.hook'
 import '../TagEditor.scss'
 import { BlockCodeMirror } from './BlockCodeMirror'
 import { BlockTagVisual } from './BlockTagVisual'
+
+/**
+ * 用於初始化 TagEditor 的自訂 Hook
+ */
 const useHook = () => {
   const { dispatch, tagEditorActions } = useTagEditor()
   const { initialize } = tagEditorActions
@@ -12,6 +16,11 @@ const useHook = () => {
     dispatch(initialize())
   }, [dispatch, initialize])
 }
+
+/**
+ * 用於顯示 TagEditor 的 function component，包含 BlockTagVisual 和 BlockCodeMirror 元件
+ * @returns {JSX.Element} 返回一個 React 元件，顯示 TagEditor 內容
+ */
 export const TagEditor: FC = () => {
   useHook()
   const location = useLocation()

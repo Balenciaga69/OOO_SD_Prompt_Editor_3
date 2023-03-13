@@ -13,6 +13,7 @@ const initialState: TagEditorState = {
   inputText: '',
   prevInputText: '',
 }
+
 const sliceName = 'TAG_EDITOR'
 export const tagEditorSlice = createSlice({
   name: sliceName,

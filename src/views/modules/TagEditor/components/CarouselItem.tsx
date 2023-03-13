@@ -9,15 +9,24 @@ import _ from 'lodash'
 import React, { FC, useEffect, useState } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
 import { AreaDragCardGrid } from './AreaDragCardGrid'
+
 interface CarouselItemProps {
   tagGroup: TagGroup
 }
+
 const useCarouselItem = () => {
   const { dispatch, tagGroupEntities, tagEditorState } = useTagEditor()
   const groupEntitiesLength = _.values(tagGroupEntities).length
   const actionCreators = bindActionCreators({ ...tagGroupSlice.actions }, dispatch)
   return { ...actionCreators, groupEntitiesLength, tagEditorState }
 }
+
+/**
+ * 輪播元素的 function component，用於顯示 tagGroup 資料的卡片
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
+ * @returns {JSX.Element} 返回一個 React 元件，顯示卡片內容
+ */
 export const CarouselItem: FC<CarouselItemProps> = (props) => {
   const { tagGroup } = props
   const { tagEditorState } = useCarouselItem()
@@ -41,14 +50,24 @@ export const CarouselItem: FC<CarouselItemProps> = (props) => {
     </Card>
   )
 }
+
+/**
+ * 用於顯示命名區塊的 function component
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
+ * @returns {JSX.Element} 返回一個 React 元件，顯示命名區塊內容
+ */
 const NamingSection: FC<CarouselItemProps> = (props) => {
   const [title, setTitle] = useState(props.tagGroup.title)
   const { updateOne } = useCarouselItem()
   const [debounced] = useDebouncedValue(title, 200)
+
   // 降低更新store的頻率
   useEffect(() => {
     updateOne({ changes: { title }, id: props.tagGroup.id })
   }, [debounced])
+
+  // 用於同步 title 狀態
   useEffect(() => {
     setTitle(props.tagGroup.title)
   }, [props.tagGroup.title])
@@ -58,6 +77,13 @@ const NamingSection: FC<CarouselItemProps> = (props) => {
     </Card.Section>
   )
 }
+
+/**
+ * 用於顯示拖曳區塊的 function component
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
+ * @returns {JSX.Element} 返回一個 React 元件，顯示拖曳區塊內容
+ */
 const DragSection: FC<CarouselItemProps> = (props) => {
   const { tagGroup: tagGroup } = props
   return (
@@ -66,6 +92,13 @@ const DragSection: FC<CarouselItemProps> = (props) => {
     </Card.Section>
   )
 }
+
+/**
+ * 用於顯示操作區塊的 function component，包含新增和刪除區塊的按鈕
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 tagGroup 資料
+ * @returns {JSX.Element} 返回一個 React 元件，顯示操作區塊內容
+ */
 const ActionSection: FC<CarouselItemProps> = (props) => {
   const { tagGroup } = props
   const { addOne, removeOne, groupEntitiesLength } = useCarouselItem()
@@ -77,9 +110,11 @@ const ActionSection: FC<CarouselItemProps> = (props) => {
     const removeID = tagGroup.id
     removeOne(removeID)
   }
+
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2x', className: 'pointer' }
   return (
     <Box>
+      {/* 顯示新增按鈕 */}
       {groupEntitiesLength < 10 && (
         <Box className='plus'>
           <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleAddClick}>
@@ -87,6 +122,7 @@ const ActionSection: FC<CarouselItemProps> = (props) => {
           </ActionIcon>
         </Box>
       )}
+      {/* 顯示刪除按鈕 */}
       {groupEntitiesLength > 1 && (
         <Box className='minus'>
           <ActionIcon variant='filled' radius='xl' size='xl' onClick={handleRemoveClick}>
@@ -97,6 +133,13 @@ const ActionSection: FC<CarouselItemProps> = (props) => {
     </Box>
   )
 }
+
+/**
+ * 用於顯示骨架元素的 function component，根據 length 參數決定顯示骨架元素的數量
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 length 屬性，決定顯示骨架元素的數量
+ * @returns {JSX.Element} 返回一個 React 元件，顯示骨架元素內容
+ */
 const SkeletonSection: FC<{ length: number }> = (props) => {
   return (
     <SimpleGrid
@@ -110,6 +153,7 @@ const SkeletonSection: FC<{ length: number }> = (props) => {
         { maxWidth: 'xs', cols: 1 },
       ]}
     >
+      {/* 顯示骨架元素 */}
       {_.times(_.min([props.length, 30]) ?? 0, (i) => (
         <Skeleton h={150} circle key={i} />
       ))}

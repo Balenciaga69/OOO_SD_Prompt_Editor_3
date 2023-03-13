@@ -8,15 +8,29 @@ import { bindActionCreators } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import React, { FC, ReactNode } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
+
 interface TagCardProps {
   tagAtom: TagAtom
 }
+
+/**
+ * 用於 TagCard 元件中使用的自訂 Hook，返回 removeOne 和 updateOne 這兩個 action creators
+ *
+ * @returns {object} 返回一個包含 removeOne 和 updateOne 兩個 action creators 的物件
+ */
 const useTagCard = () => {
   const { dispatch } = useTagEditor()
   const { removeOne, updateOne } = tagAtomSlice.actions
   const actionCreators = bindActionCreators({ removeOne, updateOne }, dispatch)
   return { ...actionCreators }
 }
+
+/**
+ * 用於顯示 TagCard 的 function component，根據傳入的 tagAtom 屬性顯示表格內容
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 tagAtom 屬性，用於顯示該 tag 的內容
+ * @returns {JSX.Element} 返回一個 React 元件，顯示 TagCard 內容
+ */
 export const TagCard: FC<TagCardProps> = ({ tagAtom }) => {
   return (
     <Card withBorder p={0} className='overflow-visible'>
@@ -30,6 +44,13 @@ export const TagCard: FC<TagCardProps> = ({ tagAtom }) => {
     </Card>
   )
 }
+
+/**
+ * 用於顯示表格中 tag 名稱的 function component，包含可拖曳排序和刪除 tag 的功能
+ *
+ * @param {object} props - 由父元件傳入的 props，包含 tagAtom 屬性，用於顯示該 tag 的名稱
+ * @returns {JSX.Element} 返回一個 React 元件，顯示表格中 tag 名稱內容
+ */
 export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
   const { removeOne } = useTagCard()
   const { attributes, listeners } = useSortable({ id: tagAtom.id })
@@ -58,6 +79,20 @@ export const RowTitle: FC<TagCardProps> = ({ tagAtom }) => {
     </tr>
   )
 }
+
+/**
+ * 更新TagCard的權重，可增加或減少數字權重與括弧權重。
+ * @function useTagCard
+ * @returns {Object} actionCreators - 用於更新store的actionCreators
+ *
+ * @function RowNumberWeight
+ * @param {TagCardProps} props - 包含單個tag atom的屬性(prop)
+ * @returns {JSX.Element} - 包含更新數字權重的tr元素
+ *
+ * @function RowBracketWeight
+ * @param {TagCardProps} props - 包含單個tag atom的屬性(prop)
+ * @returns {JSX.Element} - 包含更新括弧權重的tr元素
+ */
 const RowNumberWeight: FC<TagCardProps> = ({ tagAtom }) => {
   const { updateOne } = useTagCard()
   const handleNumMinusClick = () => {
@@ -108,11 +143,19 @@ export const RowBracketWeight: FC<TagCardProps> = ({ tagAtom }) => {
     </tr>
   )
 }
+
 interface WithNumHoverCardProps {
   children: ReactNode
   handlePlusIconClick: () => void
   handleMinusIconClick: () => void
 }
+
+/**
+ * @description 包装带有数字悬停卡的组件的高阶组件
+ * @function
+ * @param {WithNumHoverCardProps} props - 组件props对象
+ * @returns {JSX.Element} - 返回一个包含悬停卡的组件
+ */
 const WithPlusMinusHoverCard: FC<WithNumHoverCardProps> = (props) => {
   const { children, handleMinusIconClick, handlePlusIconClick } = props
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: '2xs', className: 'pointer' }
@@ -137,6 +180,13 @@ interface WithNameHoverCardProps {
   name: string
   handleXIconClick: () => void
 }
+
+/**
+ * @description 包装带有名称悬停卡的组件的高阶组件
+ * @function
+ * @param {WithNameHoverCardProps} props - 组件props对象
+ * @returns {JSX.Element} - 返回一个包含悬停卡的组件
+ */
 const WithNameHoverCard: FC<WithNameHoverCardProps> = (props) => {
   const { children, name, handleXIconClick } = props
   const iconProps: Omit<FontAwesomeIconProps, 'icon'> = { size: 'xs', className: 'pointer' }

@@ -8,12 +8,19 @@ import _ from 'lodash'
 import React, { FC, useEffect } from 'react'
 import { useTagEditor } from '../TagEditor.hook'
 
+/**
+ * @description 用來編輯代碼的編輯器，支持代碼格式化、分割、壓縮等操作，使用CodeMirror編輯器庫。
+ * @returns {Object} 一個包含了編輯器內容和編輯器操作的對象。
+ */
 const useBlockCodeMirror = () => {
   const { dispatch, tagEditorActions, tagEditorState, currentAtomList } = useTagEditor()
   const { setInputText, submitInputText, setPrevInputText } = tagEditorActions
   const actionCreators = bindActionCreators({ setInputText, setPrevInputText, submitInputText }, dispatch)
 
-  // Update previous & current State
+  /**
+   * @description 將新的輸入文本更新至狀態中，並保存先前輸入文本。
+   * @param {string} text - 新的輸入文本。
+   */
   const setNextInputText = (text: string) => {
     actionCreators.setInputText({ inputText: text })
     actionCreators.setPrevInputText({ prevInputText: text })
@@ -21,8 +28,13 @@ const useBlockCodeMirror = () => {
   return { setNextInputText, currentAtomList, tagEditorState, ...actionCreators }
 }
 
+/**
+ * @description 編輯代碼的主要面板，顯示代碼並且提供操作工具。
+ * @returns {JSX.Element} CodeMirror代碼編輯器組件。
+ */
 export const BlockCodeMirror: FC = () => {
   const { currentAtomList, setNextInputText } = useBlockCodeMirror()
+
   useEffect(() => {
     const updatedInputText = simpleTagsToCode(currentAtomList, 'split')
     setNextInputText(updatedInputText)
@@ -40,6 +52,10 @@ export const BlockCodeMirror: FC = () => {
   )
 }
 
+/**
+ * CodePanel組件：顯示程式碼編輯區塊，並將輸入的程式碼反映到狀態中。
+ * @description 這個組件包含一個程式碼編輯區塊，可以編輯程式碼，並且將輸入的程式碼反映到狀態中。
+ */
 const CodePanel: FC = () => {
   const { setInputText, tagEditorState } = useBlockCodeMirror()
   const { inputText } = tagEditorState
@@ -48,6 +64,10 @@ const CodePanel: FC = () => {
   return <CodeMirror value={inputText} placeholder={defaultText} maxHeight={maxHeight} onChange={(text) => setInputText({ inputText: text })} theme={dracula} />
 }
 
+/**
+ * @description 編輯代碼的控制面板，包含代碼的操作工具和編輯器的一些狀態提示。
+ * @returns {JSX.Element} 控制面板組件。
+ */
 const ControlPanel: FC = () => {
   const clipboard = useClipboard({ timeout: 500 })
   const { submitInputText, currentAtomList, tagEditorState, setNextInputText } = useBlockCodeMirror()
@@ -57,14 +77,17 @@ const ControlPanel: FC = () => {
     const nextText = simpleTagsToCode(currentAtomList, 'split')
     setNextInputText(nextText)
   }
+
   const handleUnderScoreClick = () => {
     const nextText = _.trim(_.replace(inputText, /[^\S\n]/g, '_'))
     setNextInputText(nextText)
   }
+
   const handleMinClick = () => {
     const nextText = simpleTagsToCode(currentAtomList, 'zip')
     setNextInputText(nextText)
   }
+
   const handleRefreshClick = () => {
     submitInputText()
   }
